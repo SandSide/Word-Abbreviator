@@ -37,10 +37,40 @@ def split_words(wordList):
         
     return splitWordList
 
+def find_abbreviations(wordList):
+    
+    wordAbbreviationsList = []
+    
+    for splitWord in wordList:
+        
+        charList = []
+        
+        for word in splitWord:
+            
+            for c in word:
+                charList.append(c)
+                
+            charList.append(' ')
+            
+        charList.pop()
+        
+        
+        abbreviations = []
+        
+        for i in range(1, len(charList) - 1):
+            for j in range(i + 1, len(charList)):
+                abbreviations.append(charList[0] + charList[i] + charList[j])
+
+                
+        print(abbreviations)
+        
+        # print(charList)
+
+
         
 words = load_file('test')
 splitWordsList = split_words(words)
 print(splitWordsList)
-# find_abbreviations(splitWordsList)
+find_abbreviations(splitWordsList)
 # for x in splitWordsList:
 #     print(x)
