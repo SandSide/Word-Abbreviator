@@ -65,11 +65,22 @@ def find_abbreviations(wordList):
 
     return wordAbbreviationsList
 
-
+def cleanup_abbreviations(abbreviationsList):
+    
+    for abbreviations in abbreviationsList:
         
+        for abbr in abbreviations:
+            
+            if ' ' in abbr:
+                abbreviations.remove(abbr)
+                
+    return abbreviationsList
+    
+     
 words = load_file('test')
 splitWords = split_words(words)
 abbreviations = find_abbreviations(splitWords)
-# abbreviations = cleanup_abbreviations(abbreviations)
-for x in abbreviations:
-    print(x)
+abbreviations = cleanup_abbreviations(abbreviations)
+print(abbreviations)
+# for x in abbreviations:
+#     print(x)
