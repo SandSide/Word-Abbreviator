@@ -3,23 +3,25 @@ import re
 pattern = r'\W'
 
 def load_file(filename):
-### Load file lines into a dictonary ###
+### Load file lines into a list ###
 
     wordList = []
     infile = open(filename + '.txt', 'r')
 
     for line in infile:
         wordList.append(line.strip())
+        
+    if wordList[-1] == '':
+        wordList.pop()
 
     return wordList
         
-def split_words(dict):
+def split_words(wordList):
     
     splitWordList = []
     
-    for word in dict:
+    for word in wordList:
 
-        # 
         word = word.upper()
 
         # Ignore some special characters
@@ -35,8 +37,10 @@ def split_words(dict):
         
     return splitWordList
 
+        
 words = load_file('test')
 splitWordsList = split_words(words)
-
-for x in splitWordsList:
-    print(x)
+print(splitWordsList)
+# find_abbreviations(splitWordsList)
+# for x in splitWordsList:
+#     print(x)
