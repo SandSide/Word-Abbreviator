@@ -91,14 +91,14 @@ def remove_duplicates(abbrLists, uniqueAbbrLists):
     
     duplicates = set()
     
-    for i in range(0, len(abbrLists)):
-        for j in range(0, len(uniqueAbbrLists)):
+    for i,x in enumerate(abbrLists):
+        for j,y in enumerate(uniqueAbbrLists):
             
             if i == j:
                 continue
             
             # Find all duplicates
-            duplicates |= set(abbrLists[i]) & set(uniqueAbbrLists[j])
+            duplicates |= set(x) & set(y)
               
     return [list(set(x) - duplicates) for x in abbrLists]
 
