@@ -16,11 +16,11 @@ def load_file(filename):
 
     return wordList
         
-def split_words(wordList):
+def split_words(wordLists):
     
     splitWordList = []
     
-    for word in wordList:
+    for word in wordLists:
 
         word = word.upper()
 
@@ -37,15 +37,15 @@ def split_words(wordList):
         
     return splitWordList
 
-def find_abbreviations(wordList):
+def find_abbreviations(wordsList):
     
     wordAbbreviationsList = []
     
-    for splitWord in wordList:
+    for words in wordsList:
         
         charList = []
         
-        for word in splitWord:
+        for word in words:
             
             for c in word:
                 charList.append(c)
@@ -65,11 +65,11 @@ def find_abbreviations(wordList):
 
     return wordAbbreviationsList
 
-def cleanup_abbreviations(abbreviationsList):
+def cleanup_abbreviations(abbreviationLists):
     
-    cleanedAbbreviationsList = []
+    cleanedAbbreviationLists = []
     
-    for abbreviations in abbreviationsList:
+    for abbreviations in abbreviationLists:
         
         cleanedAbbreviations = set()
         
@@ -79,9 +79,12 @@ def cleanup_abbreviations(abbreviationsList):
             if ' ' not in abbr:
                 cleanedAbbreviations.add(abbr)
                 
-        cleanedAbbreviationsList.append(list(cleanedAbbreviations))
+        cleanedAbbreviationLists.append(list(cleanedAbbreviations))
         
-    return cleanedAbbreviationsList
+    return cleanedAbbreviationLists
+
+def score_abbreviations(abbreviationLists):
+    v = 1
     
 words = load_file('test')
 splitWords = split_words(words)
