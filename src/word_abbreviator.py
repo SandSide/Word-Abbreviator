@@ -54,23 +54,22 @@ def find_abbreviations(wordList):
             
         charList.pop()
         
-        
         abbreviations = []
         
         for i in range(1, len(charList) - 1):
             for j in range(i + 1, len(charList)):
                 abbreviations.append(charList[0] + charList[i] + charList[j])
 
-                
-        print(abbreviations)
-        
-        # print(charList)
+        wordAbbreviationsList.append(abbreviations)
+        # print(abbreviations)
+
+    return wordAbbreviationsList
 
 
         
 words = load_file('test')
-splitWordsList = split_words(words)
-print(splitWordsList)
-find_abbreviations(splitWordsList)
-# for x in splitWordsList:
-#     print(x)
+splitWords = split_words(words)
+abbreviations = find_abbreviations(splitWords)
+# abbreviations = cleanup_abbreviations(abbreviations)
+for x in abbreviations:
+    print(x)
