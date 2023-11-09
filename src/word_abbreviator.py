@@ -65,23 +65,42 @@ def find_abbreviations(wordsList):
 
     return wordAbbreviationsList
 
-def cleanup_abbreviations(abbreviationLists):
+def cleanup_abbreviations(abbrLists):
     
-    cleanedAbbreviationLists = []
+    cleanedAbbrLists = []
+    uniqueAbbrList = []
     
-    for abbreviations in abbreviationLists:
+    for abbreviations in abbrLists:
         
-        cleanedAbbreviations = set()
+        cleanedAbbr = set()
+        uniqueAbbr = set()
         
         # Remove abbreviations with empty spaces
         # Removes duplicates since we add to a set
         for abbr in abbreviations:
             if ' ' not in abbr:
-                cleanedAbbreviations.add(abbr)
+                uniqueAbbr.add(abbr)
+                cleanedAbbr.add(abbr)
                 
-        cleanedAbbreviationLists.append(list(cleanedAbbreviations))
+        cleanedAbbrLists.append(list(cleanedAbbr))
+        uniqueAbbrList.append(uniqueAbbr)
         
-    return cleanedAbbreviationLists
+    return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
+        
+def remove_duplicates(abbrLists, uniqueAbbrLists):
+    
+    duplicates = set()
+    
+    for i in range(0, len(abbrLists)):
+        for j in range(0, len(uniqueAbbrLists)):
+            
+            if i == j:
+                continue
+            
+            # Find all duplicates
+            duplicates |= set(abbrLists[i]) & set(uniqueAbbrLists[j])
+              
+    return [list(set(x) - duplicates) for x in abbrLists]
 
 def score_abbreviations(abbreviationLists):
     v = 1
