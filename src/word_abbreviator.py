@@ -67,20 +67,26 @@ def find_abbreviations(wordList):
 
 def cleanup_abbreviations(abbreviationsList):
     
+    cleanedAbbreviationsList = []
+    
     for abbreviations in abbreviationsList:
         
+        cleanedAbbreviations = set()
+        
+        # Remove abbreviations with empty spaces
+        # Removes duplicates since we add to a set
         for abbr in abbreviations:
-            
-            if ' ' in abbr:
-                abbreviations.remove(abbr)
+            if ' ' not in abbr:
+                cleanedAbbreviations.add(abbr)
                 
-    return abbreviationsList
+        cleanedAbbreviationsList.append(list(cleanedAbbreviations))
+        
+    return cleanedAbbreviationsList
     
-     
 words = load_file('test')
 splitWords = split_words(words)
 abbreviations = find_abbreviations(splitWords)
 abbreviations = cleanup_abbreviations(abbreviations)
-print(abbreviations)
-# for x in abbreviations:
-#     print(x)
+# print(abbreviations)
+for x in abbreviations:
+    print(x)
