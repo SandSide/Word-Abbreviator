@@ -1,27 +1,42 @@
+import re
 
+pattern = r'\W'
 
 def load_file(filename):
 ### Load file lines into a dictonary ###
 
-    word_list = []
+    wordList = []
     infile = open(filename + '.txt', 'r')
 
     for line in infile:
-        word_list.append(line.strip())
+        wordList.append(line.strip())
 
-    return word_list
+    return wordList
         
-def convert_to_correct_format(dict):
-    correct_format_dict = []
+def split_words(dict):
+    
+    splitWordList = []
     
     for word in dict:
-        # Split string by empty space
-        temp_dict = word.split()
+
+        # 
+        word = word.upper()
+
+        # Ignore some special characters
+        word = re.sub(r"'|`", "", word)
         
-        # for word_part in temp_dict:
-            
-        # print(temp_dict)
-    
+        # Split at special characters
+        splitWord = re.split(r'\W', word)
+
+        # Remove empty strings in list        
+        splitWord = list(filter(None, splitWord))
+        
+        splitWordList.append(splitWord)
+        
+    return splitWordList
 
 words = load_file('test')
-convert_to_correct_format(words)
+splitWordsList = split_words(words)
+
+for x in splitWordsList:
+    print(x)
