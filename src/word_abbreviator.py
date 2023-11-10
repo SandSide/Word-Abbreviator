@@ -100,7 +100,6 @@ def determine_abbr_pos_type(pos_lists, split_words):
     for pos_list, words in zip(pos_lists, split_words):
         
         chars = '#'.join(words)
-        print(chars)
         pos_type_list = []
         
         for pos in pos_list:
@@ -128,7 +127,6 @@ def determine_abbr_pos_type(pos_lists, split_words):
         
     return abbr_pos_type_lists
 
-        
 def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
     
     clean_abbr_lists = []
@@ -142,12 +140,12 @@ def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
     return clean_abbr_lists
     return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
         
-def remove_duplicates(abbrLists, uniqueAbbrLists):
+def remove_duplicates(abbr_lists):
     
     duplicates = set()
     
-    for i,x in enumerate(abbrLists):
-        for j,y in enumerate(uniqueAbbrLists):
+    for i,x in enumerate(abbr_lists):
+        for j,y in enumerate(abbr_lists):
             
             if i == j:
                 continue
@@ -155,7 +153,7 @@ def remove_duplicates(abbrLists, uniqueAbbrLists):
             # Find all duplicates
             duplicates |= set(x) & set(y)
               
-    return [list(set(x) - duplicates) for x in abbrLists]
+    return [list(set(x) - duplicates) for x in abbr_lists]
 
 def score_abbreviations(abbrLists, wordLists):
     
@@ -236,25 +234,47 @@ def determine_abbr_positions(abbr, words):
             
     return abbrPos 
     
+    
+
 words = load_file('test')
-split_words_lists = split_words(words[0:1])
+split_words_lists = split_words(words)
 
 abbr_lists = find_abbreviations(split_words_lists)
 
 abbr_pos_lists = abbr_lists[1]
 abbr_lists = abbr_lists[0]
 
-print(abbr_lists)
+unique_abbr_lists = remove_duplicates(abbr_lists)
 
-pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, split_words_lists)
+
+
+
+temp = unique_abbr_lists
+temp_2 = abbr_lists
+
+# print(temp)
+for x in temp:
+    print(x)
+    
+    
+# for x,y in zip(temp, temp_2):
+ 
+#     print("Then")
+#     print(x)
+#     print("Now")
+#     print(y)
+
+
+
+# pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, split_words_lists)
 
 # print(abbr_lists)
 
 
 # print(len())
 
-for x in pos_type_lists:
-    print(x)
+# for x in pos_type_lists:
+#     print(x)
     
 # for x,y in zip(abbr_lists, pos_type_lists):
 #     print(len(x) == len(y))
