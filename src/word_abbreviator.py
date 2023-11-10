@@ -1,6 +1,6 @@
 import re
 
-charScore = {
+char_score = {
     'A': 25,
     'B': 8,
     'C': 8,
@@ -28,6 +28,8 @@ charScore = {
     'Y': 7,
     'Z': 1
 }
+
+
 
 def load_file(filename):
 ### Load file lines into a list ###
@@ -178,42 +180,11 @@ def score_abbr(abbr, pos_types):
             char_score += 20 if char == 'E' else 5
         else:
             char_score += score_position(pos_type)
-            char_score += charScore[char]
+            char_score += char_score[char]
     
         score += char_score   
         
     return score  
-
-   
-   # for abbr in abbreviations:
-            
-        #     abbrPos = determine_abbr_positions(abbr, words)
-            
-        #     score = 0
-            
-        #     for char, pos in zip(abbr[1:3], abbrPos):
-                
-        #         # print('{} {}'.format(char, pos))
-
-        #         if pos[0] == 0: # First letter of a word
-        #             score += 0
-        #         elif pos[1] == True: # Last Letter
-        #             score += 20 if char == 'E' else 5
-        #         else:
-                    
-        #             # Position Score
-        #             score += score_position(pos[0])
-                    
-        #             # Commonality score
-        #             score += charScore[char]
-                    
-        #     scores.append((abbr, score))
-            
-        # minScore = min(scores, key=lambda x: x[1])
-        
-        # minScores.append(minScore) 
-        
-    return 1
  
 def score_position(pos_type):
     
@@ -225,59 +196,11 @@ def score_position(pos_type):
         return 3
     
     return 0
-    
-def determine_abbr_positions(abbr, words):
-                       
-    abbrPos = []
-    currChar = abbr[1]
-    currPos = 0
-    currWordIndex = 0
-    currWord = words[currWordIndex]
-    
-    while(True):
-        if currWordIndex == len(words):
-            break
-        
-        currWord = words[currWordIndex]
-        
-        if currPos == len(currWord):
-            currWordIndex += 1
-            currPos = 0
-            continue  
-        elif currChar == currWord[currPos]:
-            
-            isLast = currPos + 1 == len(words[currWordIndex])
-            abbrPos.append((currPos, isLast))
-            
-            currChar = abbr[2]
-            currPos += 1           
-        else:
-            currPos += 1 
-            
-    return abbrPos 
-    
-    
-
-words = load_file('oop')
+      
+words = load_file('test')
 split_words_lists = split_words(words)
 
 abbr_lists, abbr_pos__type_lists = find_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
-# print(unique_abbr_lists)
-
-# print('OAG' in unique_abbr_lists)
-
 min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
-
-print(min_scores)
-
-# temp = unique_abbr_lists
-# temp_2 = unique_pos_lists
-
-# temp = [y for x in unique_abbr_lists for y in x if y[1] == 'A']
-# temp = unique_abbr_lists
-
-# for x in temp:
-#     print(x)
-
