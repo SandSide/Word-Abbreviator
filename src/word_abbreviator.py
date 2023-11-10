@@ -29,8 +29,6 @@ char_value = {
     'Z': 1
 }
 
-
-
 def load_file(filename):
 ### Load file lines into a list ###
 
@@ -169,6 +167,7 @@ def find_all_min_scores(abbr_lists, pos_type_lists):
             scores.append((abbr, abbr_score, pos_types))
             
         min_score = min(scores, key = lambda x: x[1])
+         
         score_lists.append(min_score)
 
     return score_lists
@@ -203,12 +202,25 @@ def score_position(pos_type):
         return 3
     
     return 0
-      
-words = load_file('test')
+
+def save_scores(filename, scores, words):
+    
+    filename = 'Jakubek_' + filename + '_abbrevs.txt'
+    
+    with open(filename + '.txt', 'w') as out_file:
+    
+        for score, word in zip(scores, words):    
+            out_file.write('{}\n{}\n'.format(word, score[0]))
+    
+
+filename = 'test'
+
+words = load_file(filename)
 split_words_lists = split_words(words)
 
 abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
 min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
-print(min_scores)
+print()
+save_scores(filename, min_scores, words)
