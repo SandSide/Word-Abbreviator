@@ -140,10 +140,12 @@ def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
     return clean_abbr_lists
     return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
         
-def remove_duplicates(abbr_lists):
+def remove_duplicates(abbr_lists, pos_lists):
     
     duplicates = set()
-    
+    new_abbr_lists = []
+    new_pos_lists = []
+
     for i,x in enumerate(abbr_lists):
         for j,y in enumerate(abbr_lists):
             
@@ -152,8 +154,19 @@ def remove_duplicates(abbr_lists):
             
             # Find all duplicates
             duplicates |= set(x) & set(y)
-              
-    return [list(set(x) - duplicates) for x in abbr_lists]
+            
+    for i, (abbr_list, pos_list) in enumerate(zip(abbr_lists, pos_lists)):
+        
+        duplicate_indexes = [i for i,v in enumerate(abbr_list) if v in duplicates]
+        temp_abbr_list = [v for i,v in enumerate(abbr_list) if i not in duplicate_indexes]
+        temp_pos_list = [v for i,v in enumerate(pos_list) if i not in duplicate_indexes]
+        
+        print(temp_abbr_list)
+        
+        new_abbr_lists.append(temp_abbr_list)
+        new_pos_lists.append(temp_pos_list)
+        
+    return new_abbr_lists, new_pos_lists
 
 def score_abbreviations(abbrLists, wordLists):
     
@@ -244,27 +257,10 @@ abbr_lists = find_abbreviations(split_words_lists)
 abbr_pos_lists = abbr_lists[1]
 abbr_lists = abbr_lists[0]
 
-unique_abbr_lists = remove_duplicates(abbr_lists)
-
-
-
+unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos_lists)
 
 temp = unique_abbr_lists
-temp_2 = abbr_lists
-
-# print(temp)
-for x in temp:
-    print(x)
-    
-    
-# for x,y in zip(temp, temp_2):
- 
-#     print("Then")
-#     print(x)
-#     print("Now")
-#     print(y)
-
-
+temp_2 = unique_pos_lists
 
 # pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, split_words_lists)
 
