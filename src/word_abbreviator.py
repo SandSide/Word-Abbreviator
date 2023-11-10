@@ -75,7 +75,7 @@ def find_abbreviations(wordLists):
         abbrList = []
         posList = []
         
-        print(charList)
+       # print(charList)
         
         for i in range(1, len(charList) - 1):
             for j in range(i + 1, len(charList)):
@@ -92,37 +92,41 @@ def find_abbreviations(wordLists):
     
     return (abbrLists, abbrPosLists)
         
+def determine_abbr_pos_type(posLists, splitWords):
+    
+    abbrPosTypeLists = []
+    
+    for posList, words in zip(posLists, splitWords):
+        
+        chars = '#'.join(words)
+        posTypeList = []
+        
+        for pos in posList:
+            
+            posType = []
+            
+            for x in pos[1:3]:
                 
-                # Create abbr pos
-                # pos = 
+                i = int(x)
                 
-                # for x in pos[1:3]:
+                if i - 1 < 0 or chars[i - 1] == '#':
+                    posType.append('first')
+                elif i + 1 == len(chars) or chars[i + 1] == '#':
+                    posType.append('last')
+                elif i - 2 < 0 or chars[i - 2] == '#':
+                    posType.append('second')
+                elif i - 3 < 0 or chars[i - 3] == '#':
+                    posType.append('third')
+                else:
+                    posType.append('middle')
                     
-                #     if x - 1 == 0 or charList[x - 1] == '#':
-                #         posType = 'first'
-                #     # elif charList[x - 3]  == '#' or x - 1 == 0:
-                #     #     posType = 'second'
-                #     # elif charList[x - 3]  == '#':
-                #     #     posType = 'second'
-                #     else:
-                #         posType = 'middle'
-                        
-                #     print('{} {}'.format(charList[x], posType))
-                
+            posTypeList.append(posType)
+        
+        abbrPosTypeLists.append(posTypeList)
+        
+    return abbrPosTypeLists
 
-
-                
-                
-
-
-
-
-    return wordAbbreviationsList
-
-
-
-
-
+        
 def cleanup_abbreviations(abbrLists):
     
     cleanedAbbrLists = []
@@ -230,10 +234,17 @@ def determine_abbr_positions(abbr, words):
     return abbrPos 
     
 words = load_file('test')
-splitWords = split_words(words[:2])
+splitWords = split_words(words[0:3])
 abbrLists = find_abbreviations(splitWords)
 
-print(abbrLists[1])
+abbrPosLists = abbrLists[1]
+abbrLists = abbrLists[0]
+
+posTypeLists = determine_abbr_pos_type(abbrPosLists, splitWords)
+
+for x in posTypeLists:
+    print(x)
+
 # abbrLists = cleanup_abbreviations(abbrLists)
 # scores = score_abbreviations(abbrLists, splitWords) 
 
