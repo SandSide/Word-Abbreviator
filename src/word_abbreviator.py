@@ -1,6 +1,6 @@
 import re
 
-char_score = {
+char_value = {
     'A': 25,
     'B': 8,
     'C': 8,
@@ -180,7 +180,7 @@ def score_abbr(abbr, pos_types):
             char_score += 20 if char == 'E' else 5
         else:
             char_score += score_position(pos_type)
-            char_score += char_score[char]
+            char_score += char_value[char]
     
         score += char_score   
         
@@ -204,3 +204,4 @@ abbr_lists, abbr_pos__type_lists = find_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
 min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
+print(min_scores)
