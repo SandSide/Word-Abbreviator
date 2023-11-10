@@ -145,7 +145,9 @@ def remove_duplicates(abbr_lists, pos_lists):
         
     return new_abbr_lists, new_pos_lists
 
-def score_abbreviations(abbr_lists, pos_type_lists):
+def find_all_min_scores(abbr_lists, pos_type_lists):
+    
+    score_lists = []
     
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
@@ -153,33 +155,37 @@ def score_abbreviations(abbr_lists, pos_type_lists):
         
         for abbr, pos_types in zip(abbr_list, pos_type_list):
 
-            score = 0
+            abbr_score = score_abbr(abbr, pos_types)  
+                    
+            scores.append((abbr, abbr_score, pos_types))
+            
+        min_score = min(scores, key = lambda x: x[1])
+        score_lists.append(min_score)
 
-            for char, pos_type in zip (abbr[1:3], pos_types):
-                
-                char_score = 0
-                       
-                if pos_type == 'first':
-                    char_score += 0
-                elif pos_type == 'last':
-                    char_score += 20 if char == 'E' else 5
-                else:
-                    char_score += score_position(pos_type)
-                    char_score += charScore[char]
-            
-                score += char_score              
+    return score_lists
                     
-            scores.append((abbr, score, pos_types))
-            
-        print(min(scores, key = lambda x: x[1]))
-                    
+def score_abbr(abbr, pos_types):
+    
+    score = 0
+
+    for char, pos_type in zip (abbr[1:3], pos_types):
+        
+        char_score = 0
                 
-            
-            
-            
-          
-              
-        # for abbr in abbreviations:
+        if pos_type == 'first':
+            char_score += 0
+        elif pos_type == 'last':
+            char_score += 20 if char == 'E' else 5
+        else:
+            char_score += score_position(pos_type)
+            char_score += charScore[char]
+    
+        score += char_score   
+        
+    return score  
+
+   
+   # for abbr in abbreviations:
             
         #     abbrPos = determine_abbr_positions(abbr, words)
             
@@ -262,7 +268,9 @@ unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__ty
 
 # print('OAG' in unique_abbr_lists)
 
-score_abbreviations(unique_abbr_lists, unique_pos_lists)
+min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
+
+print(min_scores)
 
 # temp = unique_abbr_lists
 # temp_2 = unique_pos_lists
