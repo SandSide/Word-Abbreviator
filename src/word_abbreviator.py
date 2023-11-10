@@ -32,22 +32,22 @@ charScore = {
 def load_file(filename):
 ### Load file lines into a list ###
 
-    wordList = []
-    infile = open(filename + '.txt', 'r')
+    word_list = []
+    in_file = open(filename + '.txt', 'r')
 
-    for line in infile:
-        wordList.append(line.strip())
+    for line in in_file:
+        word_list.append(line.strip())
         
-    if wordList[-1] == '':
-        wordList.pop()
+    if word_list[-1] == '':
+        word_list.pop()
 
-    return wordList
+    return word_list
         
-def split_words(wordList):
+def split_words(word_list):
     
-    splitWordList = []
+    split_words = []
     
-    for word in wordList:
+    for word in word_list:
 
         word = word.upper()
 
@@ -55,88 +55,92 @@ def split_words(wordList):
         word = re.sub(r"'|`", "", word)
         
         # Split at special characters
-        splitWord = re.split(r'\W', word)
+        split_word = re.split(r'\W', word)
 
         # Remove empty strings in list        
-        splitWord = list(filter(None, splitWord))
+        split_word = list(filter(None, split_word))
         
-        splitWordList.append(splitWord)
+        split_words.append(split_word)
         
-    return splitWordList
+    return split_words
 
-def find_abbreviations(wordLists):
+def find_abbreviations(split_words):
     
-    abbrLists = []
-    abbrPosLists = []
+    abbr_lists = []
+    abbr_pos_lists = []
     
-    for words in wordLists:
-        
-        charList = '#'.join(words)
-        abbrList = []
-        posList = []
-        
-       # print(charList)
-        
-        for i in range(1, len(charList) - 1):
-            for j in range(i + 1, len(charList)):
-                
-                # Create abbr
-                abbr = charList[0] + charList[i] + charList[j]
-                abbrList.append(abbr)
-                posList.append((0, i, j))
-                
-
-        abbrLists.append(abbrList)
-        abbrPosLists.append(posList)
-        
-    
-    return (abbrLists, abbrPosLists)
-        
-def determine_abbr_pos_type(posLists, splitWords):
-    
-    abbrPosTypeLists = []
-    
-    for posList, words in zip(posLists, splitWords):
+    for words in split_words:
         
         chars = '#'.join(words)
-        posTypeList = []
+        abbr_list = []
+        pos_list = []
         
-        for pos in posList:
+        for i in range(1, len(chars) - 1):
+            for j in range(i + 1, len(chars)):
+                
+                # Create abbr
+                abbr = chars[0] + chars[i] + chars[j]
+                
+                # Ignore abbr
+                if '#' in abbr:
+                    continue
+                
+                abbr_list.append(abbr)
+                pos_list.append((0, i, j))
+                
+        abbr_lists.append(abbr_list)
+        abbr_pos_lists.append(pos_list)
+        
+    return (abbr_lists, abbr_pos_lists)
+        
+def determine_abbr_pos_type(pos_lists, split_words):
+    
+    abbr_pos_type_lists = []
+    
+    for pos_list, words in zip(pos_lists, split_words):
+        
+        chars = '#'.join(words)
+        pos_type_list = []
+        
+        for pos in pos_list:
             
-            posType = []
+            pos_type = []
             
             for x in pos[1:3]:
                 
                 i = int(x)
                 
                 if i - 1 < 0 or chars[i - 1] == '#':
-                    posType.append('first')
+                    pos_type.append('first')
                 elif i + 1 == len(chars) or chars[i + 1] == '#':
-                    posType.append('last')
+                    pos_type.append('last')
                 elif i - 2 < 0 or chars[i - 2] == '#':
-                    posType.append('second')
+                    pos_type.append('second')
                 elif i - 3 < 0 or chars[i - 3] == '#':
-                    posType.append('third')
+                    pos_type.append('third')
                 else:
-                    posType.append('middle')
+                    pos_type.append('middle')
                     
-            posTypeList.append(posType)
+            pos_type_list.append(pos_type)
         
-        abbrPosTypeLists.append(posTypeList)
+        abbr_pos_type_lists.append(pos_type_list)
         
-    return abbrPosTypeLists
+    return abbr_pos_type_lists
 
         
-def cleanup_abbreviations(abbrLists):
+def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
     
-    cleanedAbbrLists = []
-    uniqueAbbrList = []
+    clean_abbr_lists = []
+    unique_abbr_list = []
     
-    for abbreviations in abbrLists:
-        cleanedAbbrLists.append([abbr for abbr in abbreviations if ' ' not in abbr])
-        uniqueAbbrList.append([abbr for abbr in abbreviations if ' ' not in abbr])
+    for abbr_list, pos_list in zip(abbr_lists, abbr_pos_lists):
+        clean_abbr_lists.append([abbr for abbr in abbr_list if '#' not in abbr])
         
-    return cleanedAbbrLists
+        
+        
+        # unique_abbr_list.append([abbr for abbr in abbr_list if '#' not in abbr])
+        
+    return clean_abbr_lists
     return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
         
 def remove_duplicates(abbrLists, uniqueAbbrLists):
@@ -234,16 +238,26 @@ def determine_abbr_positions(abbr, words):
     return abbrPos 
     
 words = load_file('test')
-splitWords = split_words(words[0:3])
-abbrLists = find_abbreviations(splitWords)
+split_words_lists = split_words(words[0:3])
 
-abbrPosLists = abbrLists[1]
-abbrLists = abbrLists[0]
+abbr_lists = find_abbreviations(split_words_lists )
 
-posTypeLists = determine_abbr_pos_type(abbrPosLists, splitWords)
+abbr_pos_lists = abbr_lists[1]
+abbr_lists = abbr_lists[0]
 
-for x in posTypeLists:
-    print(x)
+print(abbr_pos_lists)
+
+pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, abbr_lists)
+abbr_lists = cleanup_abbreviations(abbr_lists, pos_type_lists)
+
+
+# print(abbr_lists)
+
+
+# print(len())
+
+# for x in pos_type_lists:
+#     print(x)
 
 # abbrLists = cleanup_abbreviations(abbrLists)
 # scores = score_abbreviations(abbrLists, splitWords) 
