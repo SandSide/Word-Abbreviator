@@ -100,6 +100,7 @@ def determine_abbr_pos_type(pos_lists, split_words):
     for pos_list, words in zip(pos_lists, split_words):
         
         chars = '#'.join(words)
+        print(chars)
         pos_type_list = []
         
         for pos in pos_list:
@@ -112,7 +113,7 @@ def determine_abbr_pos_type(pos_lists, split_words):
                 
                 if i - 1 < 0 or chars[i - 1] == '#':
                     pos_type.append('first')
-                elif i + 1 == len(chars) or chars[i + 1] == '#':
+                elif i + 1 >= len(chars) or chars[i + 1] == '#':
                     pos_type.append('last')
                 elif i - 2 < 0 or chars[i - 2] == '#':
                     pos_type.append('second')
@@ -135,8 +136,6 @@ def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
     
     for abbr_list, pos_list in zip(abbr_lists, abbr_pos_lists):
         clean_abbr_lists.append([abbr for abbr in abbr_list if '#' not in abbr])
-        
-        
         
         # unique_abbr_list.append([abbr for abbr in abbr_list if '#' not in abbr])
         
@@ -238,26 +237,27 @@ def determine_abbr_positions(abbr, words):
     return abbrPos 
     
 words = load_file('test')
-split_words_lists = split_words(words[0:3])
+split_words_lists = split_words(words[0:1])
 
-abbr_lists = find_abbreviations(split_words_lists )
+abbr_lists = find_abbreviations(split_words_lists)
 
 abbr_pos_lists = abbr_lists[1]
 abbr_lists = abbr_lists[0]
 
-print(abbr_pos_lists)
+print(abbr_lists)
 
-pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, abbr_lists)
-abbr_lists = cleanup_abbreviations(abbr_lists, pos_type_lists)
-
+pos_type_lists = determine_abbr_pos_type(abbr_pos_lists, split_words_lists)
 
 # print(abbr_lists)
 
 
 # print(len())
 
-# for x in pos_type_lists:
-#     print(x)
+for x in pos_type_lists:
+    print(x)
+    
+# for x,y in zip(abbr_lists, pos_type_lists):
+#     print(len(x) == len(y))
 
 # abbrLists = cleanup_abbreviations(abbrLists)
 # scores = score_abbreviations(abbrLists, splitWords) 
