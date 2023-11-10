@@ -121,13 +121,13 @@ def remove_duplicates(abbrLists, uniqueAbbrLists):
 
 def score_abbreviations(abbrLists, wordLists):
     
+    minScores = []
+    
     for abbreviations, words in zip(abbrLists, wordLists):
         
         scores = []  
               
         for abbr in abbreviations:
-            
-            print(abbr)
             
             abbrPos = determine_abbr_positions(abbr, words)
             
@@ -135,7 +135,7 @@ def score_abbreviations(abbrLists, wordLists):
             
             for char, pos in zip(abbr[1:3], abbrPos):
                 
-                print('{} {}'.format(char, pos))
+                # print('{} {}'.format(char, pos))
 
                 if pos[0] == 0: # First letter of a word
                     score += 0
@@ -146,7 +146,14 @@ def score_abbreviations(abbrLists, wordLists):
                     # Position Score
                     score += score_position(pos[0])
                     
-            print(score)
+                    # Commonality score
+                    score += charScore[char]
+                    
+            scores.append(score)
+            
+        minScores.append(min(scores)) 
+        
+    return minScores
  
 def score_position(pos):
     
@@ -159,7 +166,6 @@ def score_position(pos):
     
     return 0
     
-            
 def determine_abbr_positions(abbr, words):
                        
     abbrPos = []
@@ -194,6 +200,9 @@ words = load_file('test')
 splitWords = split_words(words)
 abbrLists = find_abbreviations(splitWords)
 abbrLists = cleanup_abbreviations(abbrLists)
-scores = score_abbreviations(abbrLists[:1], splitWords[:1]) 
+scores = score_abbreviations(abbrLists, splitWords) 
+
+print(scores)
+
 # for x in abbreviations:
 #     print(x)cd 
