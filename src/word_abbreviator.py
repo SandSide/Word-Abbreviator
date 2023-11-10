@@ -149,9 +149,11 @@ def score_abbreviations(abbrLists, wordLists):
                     # Commonality score
                     score += charScore[char]
                     
-            scores.append(score)
+            scores.append((abbr, score))
             
-        minScores.append(min(scores)) 
+        minScore = min(scores, key=lambda x: x[1])
+        
+        minScores.append(minScore) 
         
     return minScores
  
