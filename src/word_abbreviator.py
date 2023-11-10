@@ -121,17 +121,44 @@ def remove_duplicates(abbrLists, uniqueAbbrLists):
 
 def score_abbreviations(abbrLists, wordLists):
     
-    for abbreviations, words in zip(abbrLists,wordLists):
+    for abbreviations, words in zip(abbrLists, wordLists):
         
-        scores = []
-        
-        print(words)
-        
+        scores = []  
+              
         for abbr in abbreviations:
-            print(determine_abbr_positions(abbr, words))    
-
             
+            print(abbr)
+            
+            abbrPos = determine_abbr_positions(abbr, words)
+            
+            score = 0
+            
+            for char, pos in zip(abbr[1:3], abbrPos):
                 
+                print('{} {}'.format(char, pos))
+
+                if pos[0] == 0: # First letter of a word
+                    score += 0
+                elif pos[1] == True: # Last Letter
+                    score += 20 if char == 'E' else 5
+                else:
+                    
+                    # Position Score
+                    score += score_position(pos[0])
+                    
+            print(score)
+ 
+def score_position(pos):
+    
+    if pos == 1:
+        return 1
+    elif pos == 2:
+        return 2
+    elif pos >= 3:
+        return 3
+    
+    return 0
+    
             
 def determine_abbr_positions(abbr, words):
                        
@@ -140,8 +167,6 @@ def determine_abbr_positions(abbr, words):
     currPos = 0
     currWordIndex = 0
     currWord = words[currWordIndex]
-    
-    print(abbr)
     
     while(True):
         if currWordIndex == len(words):
@@ -154,7 +179,9 @@ def determine_abbr_positions(abbr, words):
             currPos = 0
             continue  
         elif currChar == currWord[currPos]:
-            abbrPos.append((currChar, currPos))
+            
+            isLast = currPos + 1 == len(words[currWordIndex])
+            abbrPos.append((currPos, isLast))
             
             currChar = abbr[2]
             currPos += 1           
@@ -162,97 +189,11 @@ def determine_abbr_positions(abbr, words):
             currPos += 1 
             
     return abbrPos 
-                
-                        # firstChar = [x[0] for x in words]
-            # lastChar = [x[-1] for x in words]
-                                            
-            # for c in abbr:
-                
-
-
-            #     while(True):
-            #         if currPos == len(currWord):
-            #             print('End at {}'.format(currPos))
-            #             currWordIndex += 1
-            #             currWord = words[currWordIndex]
-            #             currPos = 0
-            #             break
-            #         elif c == currWord[currPos]:
-            #             print('{} found at {}'.format(c,currPos))
-            #             currPos += 1
-            #             break
-                        
-            #         else:
-            #             currPos += 1
-
-            #     continue
-                
-                # while(True):
-                #     if currPos == len(currWord):
-                #         currWordIndex += 1
-                #         currPos = 0
-                #         print(currWordIndex)
-                #         currWord = words[currWordIndex]
-                    
-                #     elif c == currWord[currPos]:
-                #         print(currPos)
-                #         currPos += 1
-                #         break
-                    
-                #     else:
-                #         currPos += 1
-                    
-                    
-                
-            
-            
-            
-            # Find all positions, posiiton is sequencial
-            
-            # pos = [[words.find(char) for char in abbr]]
-        
-            # print(pos)
-            
-            
-            # positions = [(c,i) for ]
-            
-            
-            # print('{}.....{}'.format(firstChar,lastChar))
-            
-            #score = 0
-            
-            # for c in abbr:
-                
-            #     if c == abbr[0]:
-            #         continue
-                          
-            #     if c == firstChar:
-            #         score += 0
-            #     elif c == lastChar:
-            #         score += 20 if c == 'E' else 5
-            #     else:
-            #         # Commonality score
-            #         score += charScore[c]
-                    
-                    # 2,3,4
-                    
-                    
-                    
-                    # Position score
-                    
-                      
-
-        #     scores.append((abbr, score))
-         
-        # for x in scores:
-        #     print(x)   
-    
     
 words = load_file('test')
 splitWords = split_words(words)
 abbrLists = find_abbreviations(splitWords)
 abbrLists = cleanup_abbreviations(abbrLists)
-scores = score_abbreviations(abbrLists, splitWords) 
-
+scores = score_abbreviations(abbrLists[:1], splitWords[:1]) 
 # for x in abbreviations:
-#     print(x)
+#     print(x)cd 
