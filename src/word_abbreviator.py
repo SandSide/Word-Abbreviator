@@ -66,40 +66,47 @@ def split_words(word_list):
         
     return split_words
 
-def find_abbreviations(split_words):
+def find_all_abbreviations(split_words):
     
     abbr_lists = []
     abbr_pos_type_lists = []
     
     for words in split_words:
         
-        chars = '#'.join(words)
-        abbr_list = []
-        pos_type_list = []
-        
-        # Find all 3 letter abbreviations
-        for i in range(1, len(chars) - 1):
-            for j in range(i + 1, len(chars)):
-                
-                # Create abbr
-                abbr = chars[0] + chars[i] + chars[j]
-                
-                # Ignore abbr
-                if '#' in abbr:
-                    continue
-                
-                abbr_list.append(abbr)
-                
-                # Determine what type of char each char is
-                pos = (0, i, j)
-                pos_types = determine_abbr_pos_type(pos, chars)
-                pos_type_list.append(pos_types)
+        abbr_list, pos_type_list = find_abbreviations(words)
                 
         abbr_lists.append(abbr_list)
         abbr_pos_type_lists.append(pos_type_list)
         
     return abbr_lists, abbr_pos_type_lists
-        
+    
+    
+def find_abbreviations(words):
+    
+    chars = '#'.join(words)
+    abbr_list = []
+    pos_type_list = []
+    
+    # Find all 3 letter abbreviations
+    for i in range(1, len(chars) - 1):
+        for j in range(i + 1, len(chars)):
+            
+            # Create abbr
+            abbr = chars[0] + chars[i] + chars[j]
+            
+            # Ignore abbr
+            if '#' in abbr:
+                continue
+            
+            abbr_list.append(abbr)
+            
+            # Determine what type of char each char is
+            pos = (0, i, j)
+            pos_types = determine_abbr_pos_type(pos, chars)
+            pos_type_list.append(pos_types)
+    
+    return abbr_list, pos_type_list
+    
 def determine_abbr_pos_type(pos_list, chars):
      
     pos_types = []
@@ -200,7 +207,7 @@ def score_position(pos_type):
 words = load_file('test')
 split_words_lists = split_words(words)
 
-abbr_lists, abbr_pos__type_lists = find_abbreviations(split_words_lists)
+abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
 min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
