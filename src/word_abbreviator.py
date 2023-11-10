@@ -91,7 +91,7 @@ def find_abbreviations(split_words):
         abbr_lists.append(abbr_list)
         abbr_pos_lists.append(pos_list)
         
-    return (abbr_lists, abbr_pos_lists)
+    return abbr_lists, abbr_pos_lists
         
 def determine_abbr_pos_type(pos_lists, split_words):
     
@@ -126,19 +126,6 @@ def determine_abbr_pos_type(pos_lists, split_words):
         abbr_pos_type_lists.append(pos_type_list)
         
     return abbr_pos_type_lists
-
-def cleanup_abbreviations(abbr_lists, abbr_pos_lists):
-    
-    clean_abbr_lists = []
-    unique_abbr_list = []
-    
-    for abbr_list, pos_list in zip(abbr_lists, abbr_pos_lists):
-        clean_abbr_lists.append([abbr for abbr in abbr_list if '#' not in abbr])
-        
-        # unique_abbr_list.append([abbr for abbr in abbr_list if '#' not in abbr])
-        
-    return clean_abbr_lists
-    return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
         
 def remove_duplicates(abbr_lists, pos_lists):
     
@@ -252,11 +239,7 @@ def determine_abbr_positions(abbr, words):
 words = load_file('test')
 split_words_lists = split_words(words)
 
-abbr_lists = find_abbreviations(split_words_lists)
-
-abbr_pos_lists = abbr_lists[1]
-abbr_lists = abbr_lists[0]
-
+abbr_lists, abbr_pos_lists = find_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos_lists)
 
 temp = unique_abbr_lists
