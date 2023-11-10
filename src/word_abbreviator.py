@@ -29,7 +29,6 @@ charScore = {
     'Z': 1
 }
 
-
 def load_file(filename):
 ### Load file lines into a list ###
 
@@ -44,11 +43,11 @@ def load_file(filename):
 
     return wordList
         
-def split_words(wordLists):
+def split_words(wordList):
     
     splitWordList = []
     
-    for word in wordLists:
+    for word in wordList:
 
         word = word.upper()
 
@@ -65,33 +64,64 @@ def split_words(wordLists):
         
     return splitWordList
 
-def find_abbreviations(wordsList):
+def find_abbreviations(wordLists):
     
-    wordAbbreviationsList = []
+    abbrLists = []
+    abbrPosLists = []
     
-    for words in wordsList:
+    for words in wordLists:
         
-        charList = []
+        charList = '#'.join(words)
+        abbrList = []
+        posList = []
         
-        for word in words:
-            
-            for c in word:
-                charList.append(c)
-                
-            charList.append(' ')
-            
-        charList.pop()
-        
-        abbreviations = []
+        print(charList)
         
         for i in range(1, len(charList) - 1):
             for j in range(i + 1, len(charList)):
-                abbreviations.append(charList[0] + charList[i] + charList[j])
+                
+                # Create abbr
+                abbr = charList[0] + charList[i] + charList[j]
+                abbrList.append(abbr)
+                posList.append((0, i, j))
+                
 
-        wordAbbreviationsList.append(abbreviations)
-        # print(abbreviations)
+        abbrLists.append(abbrList)
+        abbrPosLists.append(posList)
+        
+    
+    return (abbrLists, abbrPosLists)
+        
+                
+                # Create abbr pos
+                # pos = 
+                
+                # for x in pos[1:3]:
+                    
+                #     if x - 1 == 0 or charList[x - 1] == '#':
+                #         posType = 'first'
+                #     # elif charList[x - 3]  == '#' or x - 1 == 0:
+                #     #     posType = 'second'
+                #     # elif charList[x - 3]  == '#':
+                #     #     posType = 'second'
+                #     else:
+                #         posType = 'middle'
+                        
+                #     print('{} {}'.format(charList[x], posType))
+                
+
+
+                
+                
+
+
+
 
     return wordAbbreviationsList
+
+
+
+
 
 def cleanup_abbreviations(abbrLists):
     
@@ -102,6 +132,7 @@ def cleanup_abbreviations(abbrLists):
         cleanedAbbrLists.append([abbr for abbr in abbreviations if ' ' not in abbr])
         uniqueAbbrList.append([abbr for abbr in abbreviations if ' ' not in abbr])
         
+    return cleanedAbbrLists
     return remove_duplicates(cleanedAbbrLists, uniqueAbbrList)
         
 def remove_duplicates(abbrLists, uniqueAbbrLists):
@@ -199,12 +230,17 @@ def determine_abbr_positions(abbr, words):
     return abbrPos 
     
 words = load_file('test')
-splitWords = split_words(words)
+splitWords = split_words(words[:2])
 abbrLists = find_abbreviations(splitWords)
-abbrLists = cleanup_abbreviations(abbrLists)
-scores = score_abbreviations(abbrLists, splitWords) 
 
-print(scores)
+print(abbrLists[1])
+# abbrLists = cleanup_abbreviations(abbrLists)
+# scores = score_abbreviations(abbrLists, splitWords) 
+
+# print(abbrLists)
+
+# for x in abbrLists:
+#     print(x)
 
 # for x in abbreviations:
 #     print(x)cd 
