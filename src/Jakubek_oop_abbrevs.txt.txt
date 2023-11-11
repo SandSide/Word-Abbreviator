@@ -1,2 +1,8 @@
 Data Engineering
-DAE
+DAE DEG
+Object Oriented Programming
+OOP
+empty abbr list
+
+test
+CLD CLO CPO

@@ -33,6 +33,27 @@ char_value = {
     'Z': 1
 }
 
+def handle_user_input():
+    """Waits to user input for a filename, checks to see if that file exists. 
+    Returns filename if it exits, otherwise to ask the user to re-enter name
+
+    Returns:
+        string: name of a existing file
+    """
+    user_input = input("Enter input filename: ")
+    
+    path = os.path.join(script_directory, user_input) + ".txt"
+    
+    # While the file dose not exist
+    while not os.path.exists(path):
+        
+        # Ask for re-input
+        print('File {} dose not exist'.format(user_input))
+        user_input = input("Enter input filename: ")
+        path = os.path.join(script_directory, user_input) + ".txt"
+    
+    return user_input
+
 def load_file(filename):
 ### Load file lines into a list ###
 
@@ -243,28 +264,6 @@ def save_abbr(filename, abbr_lists, words):
             
             abbrs = " ".join(abbr_list)
             out_file.write('{}\n{}\n'.format(word, abbrs))
-
-def handle_user_input():
-    """Waits to user input for a filename, checks to see if that file exists. 
-    Returns filename if it exits, otherwise to ask the user to re-enter name
-
-    Returns:
-        string: name of a existing file
-    """
-    user_input = input("Enter input filename: ")
-    
-    path = os.path.join(script_directory, user_input) + ".txt"
-    
-    # While the file dose not exist
-    while not os.path.exists(path):
-        
-        # Ask for re-input
-        print('File {} dose not exist'.format(user_input))
-        user_input = input("Enter input filename: ")
-        path = os.path.join(script_directory, user_input) + ".txt"
-    
-    return user_input
-    
     
 def main():
     filename = handle_user_input()
@@ -276,6 +275,9 @@ def main():
     unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
     min_score_abbr_lists = find_all_min_score_abbr(unique_abbr_lists, unique_pos_lists)
+    
+    # min_score_abbr_lists.append([''])
+    # words.append('empty abbr list')
     
     # min_score_abbr_lists.append(['CLD', 'CLO', 'CPO'])
     # words.append('test')
