@@ -157,7 +157,7 @@ def remove_duplicates(abbr_lists, pos_lists):
         
     return new_abbr_lists, new_pos_lists
 
-def find_all_min_scores(abbr_lists, pos_type_lists):
+def find_all_min_score_abbr(abbr_lists, pos_type_lists):
     """Finds all abbreviations which have min score for each abbr list.
 
     Args:
@@ -168,12 +168,12 @@ def find_all_min_scores(abbr_lists, pos_type_lists):
         list of lists: A list containing abbreviations with lowest score for ach abbr list.
     """
     
-    score_lists = []
+    min_score_abbrs_list = []
     
     # For each list
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
-        scores = []
+        abbr_scores = []
         
         # Find score for each abbr in list
         for abbr, pos_types in zip(abbr_list, pos_type_list):
@@ -181,17 +181,17 @@ def find_all_min_scores(abbr_lists, pos_type_lists):
             # Score abbr
             abbr_score = score_abbr(abbr, pos_types)  
                     
-            scores.append((abbr, abbr_score))
+            abbr_scores.append((abbr, abbr_score))
             
         # Find lowest score
-        min_score = min(scores, key = lambda x: x[1])
+        min_score = min(abbr_scores, key = lambda x: x[1])
 
         # Find all abbreviations containing min score
-        min_scores = [score for score in scores if score[1] == min_score[1]]
+        min_scores = [abbr_score[0] for abbr_score in abbr_scores if abbr_score[1] == min_score[1]]
         
-        score_lists.append(min_scores)
+        min_score_abbrs_list.append(min_scores)
 
-    return score_lists
+    return min_score_abbrs_list
                     
 def score_abbr(abbr, pos_types):
     
@@ -224,15 +224,25 @@ def score_position(pos_type):
     
     return 0
 
-def save_scores(filename, scores, words):
+def save_abbr(filename, abbr_lists, words):
+    """Save words and their abbreviations to a file.
+
+    Args:
+        filename (string): filename used as input file.
+        abbr_lists (list of lists): A list containing lists of abbreviations.
+        words (string list): a list of words which each abbr is an abbreviation of.
+    """
     
-    filename = 'Jakubek_' + filename + '_abbrevs.txt'
+    filename = 'jakubek_' + filename + '_abbrevs.txt'
     path = os.path.join(script_directory, filename)
     
     with open(path + '.txt', 'w') as out_file:
     
-        for score, word in zip(scores, words):    
-            out_file.write('{}\n{}\n'.format(word, score[0]))
+        # Save word and their abbreviations
+        for abbr_list, word in zip(abbr_lists, words):    
+            
+            abbrs = " ".join(abbr_list)
+            out_file.write('{}\n{}\n'.format(word, abbrs))
 
 def handle_user_input():
     """Waits to user input for a filename, checks to see if that file exists. 
@@ -265,8 +275,12 @@ def main():
     abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
     unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
-    min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
-    save_scores(filename, min_scores, words)
+    min_score_abbr_lists = find_all_min_score_abbr(unique_abbr_lists, unique_pos_lists)
+    
+    # min_score_abbr_lists.append(['CLD', 'CLO', 'CPO'])
+    # words.append('test')
+    
+    save_abbr(filename, min_score_abbr_lists, words)
     
 
 if __name__ == "__main__":
