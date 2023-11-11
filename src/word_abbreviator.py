@@ -1,5 +1,6 @@
 import re
 import os
+from pathlib import Path
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -218,8 +219,23 @@ def save_scores(filename, scores, words):
             out_file.write('{}\n{}\n'.format(word, score[0]))
 
 def handle_user_input():
-    
+    """Waits to user input for a filename, checks to see if that file exists. 
+    Returns filename if it exits, otherwise to ask the user to re-enter name
+
+    Returns:
+        string: name of a existing file
+    """
     user_input = input("Enter input filename: ")
+    
+    path = os.path.join(script_directory, user_input) + ".txt"
+    
+    # While the file dose not exist
+    while not os.path.exists(path):
+        
+        # Ask for re-input
+        print('File {} dose not exist'.format(user_input))
+        user_input = input("Enter input filename: ")
+        path = os.path.join(script_directory, user_input) + ".txt"
     
     return user_input
     
