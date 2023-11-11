@@ -158,22 +158,38 @@ def remove_duplicates(abbr_lists, pos_lists):
     return new_abbr_lists, new_pos_lists
 
 def find_all_min_scores(abbr_lists, pos_type_lists):
+    """Finds all abbreviations which have min score for each abbr list.
+
+    Args:
+        abbr_lists (list of lists): A list of abbr lists.
+        pos_type_lists (list of lists): A list of position type lists corresponding to each abbr list.
+
+    Returns:
+        list of lists: A list containing abbreviations with lowest score for ach abbr list.
+    """
     
     score_lists = []
     
+    # For each list
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
         scores = []
         
+        # Find score for each abbr in list
         for abbr, pos_types in zip(abbr_list, pos_type_list):
 
+            # Score abbr
             abbr_score = score_abbr(abbr, pos_types)  
                     
-            scores.append((abbr, abbr_score, pos_types))
+            scores.append((abbr, abbr_score))
             
+        # Find lowest score
         min_score = min(scores, key = lambda x: x[1])
-         
-        score_lists.append(min_score)
+
+        # Find all abbreviations containing min score
+        min_scores = [score for score in scores if score[1] == min_score[1]]
+        
+        score_lists.append(min_scores)
 
     return score_lists
                     

@@ -1,6 +1,6 @@
 Cold
-CLD
+('CLD', 22)
 Cool
-COO
+('COO', 43)
 C++ Code
-CCD
+('CCD', 11)
