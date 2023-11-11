@@ -1,4 +1,7 @@
 import re
+import os
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
 
 char_value = {
     'A': 25,
@@ -32,8 +35,10 @@ char_value = {
 def load_file(filename):
 ### Load file lines into a list ###
 
+    path = os.path.join(script_directory, filename)
+
     word_list = []
-    in_file = open(filename + '.txt', 'r')
+    in_file = open(path + '.txt', 'r')
 
     for line in in_file:
         word_list.append(line.strip())
@@ -206,14 +211,14 @@ def score_position(pos_type):
 def save_scores(filename, scores, words):
     
     filename = 'Jakubek_' + filename + '_abbrevs.txt'
+    path = os.path.join(script_directory, filename)
     
-    with open(filename + '.txt', 'w') as out_file:
+    with open(path + '.txt', 'w') as out_file:
     
         for score, word in zip(scores, words):    
             out_file.write('{}\n{}\n'.format(word, score[0]))
-    
 
-filename = 'test'
+filename = 'oop'
 
 words = load_file(filename)
 split_words_lists = split_words(words)
@@ -222,5 +227,4 @@ abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
 unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
 min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
-print()
 save_scores(filename, min_scores, words)
