@@ -83,7 +83,6 @@ def find_all_abbreviations(split_words):
         
     return abbr_lists, abbr_pos_type_lists
     
-    
 def find_abbreviations(words):
     
     chars = '#'.join(words)
@@ -218,7 +217,13 @@ def save_scores(filename, scores, words):
         for score, word in zip(scores, words):    
             out_file.write('{}\n{}\n'.format(word, score[0]))
 
-filename = 'oop'
+def handle_user_input():
+    
+    user_input = input("Enter input filename: ")
+    
+    return user_input
+    
+filename = handle_user_input()
 
 words = load_file(filename)
 split_words_lists = split_words(words)
