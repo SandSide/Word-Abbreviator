@@ -239,13 +239,19 @@ def handle_user_input():
     
     return user_input
     
-filename = handle_user_input()
+    
+def main():
+    filename = handle_user_input()
 
-words = load_file(filename)
-split_words_lists = split_words(words)
+    words = load_file(filename)
+    split_words_lists = split_words(words)
 
-abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
-unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
+    abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
+    unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
 
-min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
-save_scores(filename, min_scores, words)
+    min_scores = find_all_min_scores(unique_abbr_lists, unique_pos_lists)
+    save_scores(filename, min_scores, words)
+    
+
+if __name__ == "__main__":
+    main()
