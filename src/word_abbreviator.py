@@ -308,6 +308,14 @@ def score_abbreviation(abbr, pos_types):
     return score  
  
 def score_position(pos_type):
+    """Score position type
+
+    Args:
+        pos_type (str): Type of position.
+
+    Returns:
+        int: Score
+    """
     
     if pos_type == 'second':
         return 1
