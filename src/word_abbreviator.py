@@ -232,35 +232,37 @@ def remove_duplicate_abbreviations(abbr_lists, pos_lists):
         
     return new_abbr_lists, new_pos_type_lists
 
-def find_all_min_score_abbr(abbr_lists, pos_type_lists):
-    """Finds all abbreviations which have min score for each abbr list.
+def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
+    """Finds all abbreviations which have min score for each abbreviations list.
 
     Args:
-        abbr_lists (list of lists): A list of abbr lists.
-        pos_type_lists (list of lists): A list of position type lists corresponding to each abbr list.
+        abbr_lists (List[List[str]]): A list of abbreviation lists.
+        pos_type_lists (List[List[(str, str)]): A list of lists of position type corresponding to each abbreviation.
 
     Returns:
-        list of lists: A list containing abbreviations with lowest score for ach abbr list.
+        List[List[str]]: A list containing abbreviations with lowest score for each abbreviation list.
     """
     
-    min_score_abbrs_list = []
+    min_score_abbr_lists = []
     
     # For each list
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
         # Ignore empty abbr list
         if len(abbr_list) == 0:
-            min_score_abbrs_list.append([])
+            min_score_abbr_lists.append([])
             continue
         
+        # Store abbreviation and its score
         abbr_scores = []
         
-        # Find score for each abbr in list
+        # Find score for each abbreviation in the list
         for abbr, pos_types in zip(abbr_list, pos_type_list):
 
-            # Score abbr
+            # Score abbreviation
             abbr_score = score_abbr(abbr, pos_types)  
                     
+            # Add abbreviation and score to list
             abbr_scores.append((abbr, abbr_score))
             
         # Find lowest score
@@ -269,9 +271,9 @@ def find_all_min_score_abbr(abbr_lists, pos_type_lists):
         # Find all abbreviations containing min score
         min_scores = [abbr_score[0] for abbr_score in abbr_scores if abbr_score[1] == min_score[1]]
         
-        min_score_abbrs_list.append(min_scores)
+        min_score_abbr_lists.append(min_scores)
 
-    return min_score_abbrs_list
+    return min_score_abbr_lists
                     
 def score_abbr(abbr, pos_types):
     
@@ -337,7 +339,7 @@ def main():
     abbr_lists, pos__type_lists = find_all_abbreviations(split_words_lists)
     unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos__type_lists)
 
-    min_score_abbr_lists = find_all_min_score_abbr(unique_abbr_lists, unique_pos_lists)
+    min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists, unique_pos_lists)
     
     # min_score_abbr_lists.append([''])
     # words.append('empty abbr list')
