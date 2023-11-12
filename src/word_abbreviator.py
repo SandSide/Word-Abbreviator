@@ -98,18 +98,29 @@ def split_words(word_list):
     return split_words
 
 def find_all_abbreviations(split_words):
+    """Find all 3 letter abbreviations for each word.
+
+    Args:
+        split_words (List[List[str]]): A list of split words.
+
+    Returns:
+        List[List[abbr]]: A list of abbr for each split word.
+        List[List[()]]: A tuple of pos types of each abbr char for each split word.
+    """
     
     abbr_lists = []
-    abbr_pos_type_lists = []
+    pos_type_lists = []
     
     for words in split_words:
         
+        # Find all 3 letter abbreviations for word
+        # Find position type for each letter in the abbreviation.
         abbr_list, pos_type_list = find_abbreviations(words)
                 
         abbr_lists.append(abbr_list)
-        abbr_pos_type_lists.append(pos_type_list)
+        pos_type_lists.append(pos_type_list)
         
-    return abbr_lists, abbr_pos_type_lists
+    return abbr_lists, pos_type_lists
     
 def find_abbreviations(words):
     
@@ -286,8 +297,8 @@ def main():
     
     split_words_lists = split_words(words)
 
-    abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
-    unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, abbr_pos__type_lists)
+    abbr_lists, pos__type_lists = find_all_abbreviations(split_words_lists)
+    unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, pos__type_lists)
 
     min_score_abbr_lists = find_all_min_score_abbr(unique_abbr_lists, unique_pos_lists)
     
