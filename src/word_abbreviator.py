@@ -182,6 +182,11 @@ def find_all_min_score_abbr(abbr_lists, pos_type_lists):
     # For each list
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
+        # Ignore empty abbr list
+        if len(abbr_list) == 0:
+            min_score_abbrs_list.append([])
+            continue
+        
         abbr_scores = []
         
         # Find score for each abbr in list
