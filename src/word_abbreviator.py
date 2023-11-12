@@ -4,34 +4,22 @@ from pathlib import Path
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
-char_value = {
-    'A': 25,
-    'B': 8,
-    'C': 8,
-    'D': 9,
-    'E': 35,
-    'F': 7,
-    'G': 9,
-    'H': 7,
-    'I': 25,
-    'J': 3,
-    'K': 6,
-    'L': 15,
-    'M': 8,
-    'N': 15,
-    'O': 20,
-    'P': 8,
-    'Q': 1,
-    'R': 15,
-    'S': 15,
-    'T': 15,
-    'U': 20,
-    'V': 7,
-    'W': 7,
-    'X': 3,
-    'Y': 7,
-    'Z': 1
-}
+char_value = {}
+
+def load_char_values():
+    """Load char value dictionary from a file.
+    """
+
+    path = os.path.join(script_directory, 'values')
+    
+    with open(path + '.txt', 'r') as in_file:
+        for line in in_file:
+            
+            # Get key value pairs
+            char  = line.split()[0]
+            value = int(line.split()[1])
+            
+            char_value[char] = value
 
 def handle_user_input():
     """Waits to user input for a filename, checks to see if that file exists. 
@@ -266,6 +254,9 @@ def save_abbr(filename, abbr_lists, words):
             out_file.write('{}\n{}\n'.format(word, abbrs))
     
 def main():
+    
+    load_char_values()
+    
     filename = handle_user_input()
 
     words = load_file(filename)
