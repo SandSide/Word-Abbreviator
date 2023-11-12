@@ -330,11 +330,12 @@ def save_abbr(filename, abbr_lists, words):
     """Save words and their abbreviations to a file.
 
     Args:
-        filename (string): filename used as input file.
-        abbr_lists (list of lists): A list containing lists of abbreviations.
-        words (string list): a list of words which each abbr is an abbreviation of.
+        filename (str): Filename of output file.
+        abbr_lists (List[List[str]]): A list containing lists of abbreviations.
+        words (List[str]): A list of words which each abbr is an abbreviation of.
     """
     
+    # Determine outfile name 
     filename = 'jakubek_' + filename + '_abbrevs.txt'
     path = os.path.join(script_directory, filename)
     
@@ -343,30 +344,34 @@ def save_abbr(filename, abbr_lists, words):
         # Save word and their abbreviations
         for abbr_list, word in zip(abbr_lists, words):    
             
-            abbrs = " ".join(abbr_list)
-            out_file.write('{}\n{}\n'.format(word, abbrs))
+            all_abbr = " ".join(abbr_list)
+            out_file.write('{}\n{}\n'.format(word, all_abbr))
     
 def main():
+    """Find unique and lowest scoring abbreviations to a list of word. """
     
+    # Init char values
     load_char_values()
     
+    # Get filename
     filename = handle_user_input()
 
+    # Read file
     words = load_file(filename)
     
+    # Split words
     split_words_lists = split_words(words)
 
+    # Find abbreviations
     abbr_lists, pos__type_lists = find_all_abbreviations(split_words_lists)
+    
+    # Remove duplicates
     unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos__type_lists)
 
+    # Find all min scoring abbreviations
     min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists, unique_pos_lists)
-    
-    # min_score_abbr_lists.append([''])
-    # words.append('empty abbr list')
-    
-    # min_score_abbr_lists.append(['CLD', 'CLO', 'CPO'])
-    # words.append('test')
-    
+
+    # Save abbreviations
     save_abbr(filename, min_score_abbr_lists, words)
     
 
