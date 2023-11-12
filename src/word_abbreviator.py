@@ -260,7 +260,7 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
         for abbr, pos_types in zip(abbr_list, pos_type_list):
 
             # Score abbreviation
-            abbr_score = score_abbr(abbr, pos_types)  
+            abbr_score = score_abbreviation(abbr, pos_types)  
                     
             # Add abbreviation and score to list
             abbr_scores.append((abbr, abbr_score))
@@ -275,14 +275,25 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
 
     return min_score_abbr_lists
                     
-def score_abbr(abbr, pos_types):
+def score_abbreviation(abbr, pos_types):
+    """Score the abbreviation.
+
+    Args:
+        abbr (str): Abbreviation to score.
+        pos_types ((str,str)): Position type for each relevant abbreviation char
+
+    Returns:
+        int: Score of the abbreviation.
+    """
     
     score = 0
 
+    # Determine score for each char in abbreviation
     for char, pos_type in zip (abbr[1:3], pos_types):
         
         char_score = 0
                 
+        # Calculate char score
         if pos_type == 'first':
             char_score += 0
         elif pos_type == 'last':
@@ -291,6 +302,7 @@ def score_abbr(abbr, pos_types):
             char_score += score_position(pos_type)
             char_score += char_value[char]
     
+        # Add char score to overall score
         score += char_score   
         
     return score  
