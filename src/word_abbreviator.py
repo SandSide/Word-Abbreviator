@@ -191,31 +191,46 @@ def determine_position_type(positions, chars):
 
     return pos_types
         
-def remove_duplicates(abbr_lists, pos_lists):
+def remove_duplicate_abbreviations(abbr_lists, pos_lists):
+    """Remove duplicate abbreviations when present in other lists.
+
+    Args:
+        abbr_lists (List[List[str]]): A list of abbreviations.
+        pos_lists (List[List[(str,str)]]: A list of pos types.
+
+    Returns:
+        List[List[abbr]]: A list of unique abbreviations.
+        List[List[()]]: A list of types for each unique abbreviation.
+    """
     
     duplicates = set()
     new_abbr_lists = []
-    new_pos_lists = []
+    new_pos_type_lists = []
 
+    # Find all duplicate abbreviations
     for i,x in enumerate(abbr_lists):
         for j,y in enumerate(abbr_lists):
             
             if i == j:
                 continue
             
-            # Find all duplicates
+            # Add duplicates
             duplicates |= set(x) & set(y)
             
+    # Remove duplicate abbreviations from abbr list and their related pos types.
     for i, (abbr_list, pos_list) in enumerate(zip(abbr_lists, pos_lists)):
         
+        # Find indexes of duplicates present in the list
         duplicate_indexes = [i for i,v in enumerate(abbr_list) if v in duplicates]
-        temp_abbr_list = [v for i,v in enumerate(abbr_list) if i not in duplicate_indexes]
-        temp_pos_list = [v for i,v in enumerate(pos_list) if i not in duplicate_indexes]
         
-        new_abbr_lists.append(temp_abbr_list)
-        new_pos_lists.append(temp_pos_list)
+        # Remove duplicates form both lists based on the index
+        unique_abbr_list = [v for i,v in enumerate(abbr_list) if i not in duplicate_indexes]
+        unique_pos_list = [v for i,v in enumerate(pos_list) if i not in duplicate_indexes]
         
-    return new_abbr_lists, new_pos_lists
+        new_abbr_lists.append(unique_abbr_list)
+        new_pos_type_lists.append(unique_pos_list)
+        
+    return new_abbr_lists, new_pos_type_lists
 
 def find_all_min_score_abbr(abbr_lists, pos_type_lists):
     """Finds all abbreviations which have min score for each abbr list.
@@ -320,7 +335,7 @@ def main():
     split_words_lists = split_words(words)
 
     abbr_lists, pos__type_lists = find_all_abbreviations(split_words_lists)
-    unique_abbr_lists, unique_pos_lists = remove_duplicates(abbr_lists, pos__type_lists)
+    unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos__type_lists)
 
     min_score_abbr_lists = find_all_min_score_abbr(unique_abbr_lists, unique_pos_lists)
     
