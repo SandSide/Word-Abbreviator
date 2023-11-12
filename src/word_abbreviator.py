@@ -35,7 +35,6 @@ def handle_user_input():
     
     return user_input
 
-
 def check_if_file_exists(filename):
     """Check if file exists in script directory.
 
@@ -52,18 +51,21 @@ def check_if_file_exists(filename):
     
 
 def load_file(filename):
-### Load file lines into a list ###
+    """Load a file of strings.
 
+    Args:
+        filename (str): Name of a file we read from.
+
+    Returns:
+        List[str]: A list of strings in the file.
+    """
+    # Path to file
     path = os.path.join(script_directory, filename)
 
     word_list = []
-    in_file = open(path + '.txt', 'r')
-
-    for line in in_file:
-        word_list.append(line.strip())
+    with open(path + '.txt', 'r') as in_file:
         
-    if word_list[-1] == '':
-        word_list.pop()
+        word_list = [line.strip() for line in in_file if line.strip()]
 
     return word_list
         
@@ -274,6 +276,7 @@ def main():
     filename = handle_user_input()
 
     words = load_file(filename)
+    
     split_words_lists = split_words(words)
 
     abbr_lists, abbr_pos__type_lists = find_all_abbreviations(split_words_lists)
