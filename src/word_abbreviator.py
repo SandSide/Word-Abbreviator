@@ -1,6 +1,5 @@
 import re
 import os
-from pathlib import Path
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,10 +15,9 @@ def load_char_values():
         for line in in_file:
             
             # Get key value pairs
-            char  = line.split()[0]
-            value = int(line.split()[1])
+            char, value = line.split()
             
-            char_value[char] = value
+            char_value[char] = int(value)
 
 def handle_user_input():
     """Waits to user input for a filename, checks to see if that file exists. 
