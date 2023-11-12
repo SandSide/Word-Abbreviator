@@ -3,15 +3,15 @@ AEY
 Biodiversity conservation
 BYC
 Quantum computing
-QMC
+QMC QCG
 Sustainable development
 SDT
 Machine learning models
-MLG
+MLG MGM
 Clean energy solutions
 CEY
 Global economic trends
-GLE
+GLE GLT
 Neuroscientific studies
 NSS
 Digital innovation
@@ -23,7 +23,7 @@ CTQ
 Blockchain technology
 BKT
 Astronomical discoveries
-ALD
+ALD ADS
 Inclusive education
 IEN
 Neural network architectures
@@ -33,7 +33,7 @@ CHP
 Urban planning concepts
 UPC
 Genetic engineering ethics
-GEG
+GEG GGE
 Innovation in business
 IIB
 Medical advancements
@@ -47,14 +47,14 @@ VRA
 Sustainable farming practices
 SFP
 Human rights advocacy
-HRY
+HRY HSA HAY
 Space exploration missions
-SEX
+SEX SXM
 Data privacy regulations
 DPR
 EdTech trends
-EHT
+EHT ETS
 Climate action strategies
-CMA
+CMA CMS
 Philosophical discussions
-PLD
+PLD PDS

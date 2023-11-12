@@ -155,17 +155,26 @@ def find_abbreviations(words):
             pos = (0, i, j)
             
             # Determine pos type
-            pos_types = determine_abbr_pos_type(pos, chars)
+            pos_types = determine_position_type(pos, chars)
             
             pos_type_list.append(pos_types)
     
     return abbr_list, pos_type_list
     
-def determine_abbr_pos_type(pos_list, chars):
+def determine_position_type(positions, chars):
+    """Determine position types for characters in an abbreviation.
+
+    Args:
+        positions ((int,int,int)): Positions of abbreviation characters.
+        chars (str): A str abbreviation was made from.
+
+    Returns:
+        (str,str): Tuple of position types.
+    """
      
     pos_types = []
     
-    for x in pos_list[1:3]:
+    for x in positions[1:3]:
         
         i = int(x)
         
