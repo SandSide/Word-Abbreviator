@@ -6,8 +6,7 @@ script_directory = os.path.dirname(os.path.abspath(__file__))
 char_value = {}
 
 def load_char_values():
-    """Load char value dictionary from a file.
-    """
+    """Load char value dictionary from a file."""
 
     path = os.path.join(script_directory, 'values')
     
@@ -20,25 +19,37 @@ def load_char_values():
             char_value[char] = int(value)
 
 def handle_user_input():
-    """Waits to user input for a filename, checks to see if that file exists. 
-    Returns filename if it exits, otherwise to ask the user to re-enter name
-
+    """Prompt user for a filename and checks if it exists.
+    
     Returns:
-        string: name of a existing file
+        str: Name of a existing file.
     """
     user_input = input("Enter input filename: ")
     
-    path = os.path.join(script_directory, user_input) + ".txt"
-    
     # While the file dose not exist
-    while not os.path.exists(path):
+    while not check_if_file_exists(user_input):
         
         # Ask for re-input
         print('File {} dose not exist'.format(user_input))
         user_input = input("Enter input filename: ")
-        path = os.path.join(script_directory, user_input) + ".txt"
     
     return user_input
+
+
+def check_if_file_exists(filename):
+    """Check if file exists in script directory.
+
+    Args:
+        filename (str): Name of a file.
+
+    Returns:
+        bool: Whether file exists or not.
+    """
+    
+    path = os.path.join(script_directory, filename) + ".txt"
+    
+    return os.path.exists(path)
+    
 
 def load_file(filename):
 ### Load file lines into a list ###
