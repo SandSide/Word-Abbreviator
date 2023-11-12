@@ -49,7 +49,6 @@ def check_if_file_exists(filename):
     
     return os.path.exists(path)
     
-
 def load_file(filename):
     """Load a file of strings.
 
@@ -70,6 +69,14 @@ def load_file(filename):
     return word_list
         
 def split_words(word_list):
+    """Split a list of words.
+
+    Args:
+        word_list (List[str]): A list of words.
+
+    Returns:
+        List[List[str]]: A list of split words.
+    """
     
     split_words = []
     
