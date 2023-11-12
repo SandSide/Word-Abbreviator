@@ -123,7 +123,17 @@ def find_all_abbreviations(split_words):
     return abbr_lists, pos_type_lists
     
 def find_abbreviations(words):
+    """Find all 3 letter abbreviations for a list of word.
+
+    Args:
+        words (List[str]): Words to find abbreviations for.
+
+    Returns:
+        List[str]: A list of abbreviations.
+        List(()): A list of pos type tuples for each char in abbr.
+    """
     
+    # Convert words into a single word for easier manipulation
     chars = '#'.join(words)
     abbr_list = []
     pos_type_list = []
@@ -135,15 +145,18 @@ def find_abbreviations(words):
             # Create abbr
             abbr = chars[0] + chars[i] + chars[j]
             
-            # Ignore abbr
+            # Ignore abbr if invalid
             if '#' in abbr:
                 continue
             
             abbr_list.append(abbr)
             
-            # Determine what type of char each char is
+            # Save pos of each char in abbr
             pos = (0, i, j)
+            
+            # Determine pos type
             pos_types = determine_abbr_pos_type(pos, chars)
+            
             pos_type_list.append(pos_types)
     
     return abbr_list, pos_type_list
