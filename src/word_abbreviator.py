@@ -67,7 +67,7 @@ def load_file(filename):
         word_list = [line.strip() for line in in_file if line.strip()]
 
     return word_list
-        
+
 def split_words(word_list):
     """Split a list of words.
 
