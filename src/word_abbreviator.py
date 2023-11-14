@@ -387,6 +387,8 @@ def main():
     # Save abbreviations
     save_abbr(filename, min_score_abbr_lists, words)
     
+    print(find_abbreviations('HELLO'))
+    
 
 if __name__ == "__main__":
     main()
