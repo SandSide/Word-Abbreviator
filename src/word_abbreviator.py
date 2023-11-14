@@ -68,6 +68,29 @@ def load_file(filename):
 
     return word_list
 
+def split_string(word):
+    """Split word to make it suitable for abbreviation.
+
+    Args:
+        word (str_type_): String to split.
+
+    Returns:
+        List[str]: A split string.
+    """
+    
+    word = word.upper()
+
+    # Ignore some special characters
+    word = re.sub(r"'|`", "", word)
+    
+    # Split at special characters
+    split_word = re.split(r'\W', word)
+
+    # Remove empty strings in list        
+    split_word = list(filter(None, split_word))
+    
+    return split_word
+
 def split_words(word_list):
     """Split a list of words.
 
@@ -82,17 +105,7 @@ def split_words(word_list):
     
     for word in word_list:
 
-        word = word.upper()
-
-        # Ignore some special characters
-        word = re.sub(r"'|`", "", word)
-        
-        # Split at special characters
-        split_word = re.split(r'\W', word)
-
-        # Remove empty strings in list        
-        split_word = list(filter(None, split_word))
-        
+        split_word = split_string(word)
         split_words.append(split_word)
         
     return split_words
