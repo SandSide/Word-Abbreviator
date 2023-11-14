@@ -187,9 +187,14 @@ def determine_position_type(positions, chars):
      
     pos_types = []
     
-    for x in positions[1:3]:
+    
+    for x in positions:
         
         i = int(x)
+        
+        if i == 0:
+            pos_types.append('first')
+            continue
         
         if i - 1 < 0 or chars[i - 1] == '#':
             pos_types.append('first')
@@ -302,7 +307,7 @@ def score_abbreviation(abbr, pos_types):
     score = 0
 
     # Determine score for each char in abbreviation
-    for char, pos_type in zip (abbr[1:3], pos_types):
+    for char, pos_type in zip (abbr, pos_types):
         
         char_score = 0
                 
@@ -386,8 +391,6 @@ def main():
 
     # Save abbreviations
     save_abbr(filename, min_score_abbr_lists, words)
-    
-    print(find_abbreviations('HELLO'))
     
 
 if __name__ == "__main__":

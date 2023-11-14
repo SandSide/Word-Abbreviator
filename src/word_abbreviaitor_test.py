@@ -36,8 +36,20 @@ class TestWordSplit(unittest.TestCase):
         
         actual_result = word_abbreviator.find_abbreviations(input_string)
         self.assertEqual(actual_result[0], expected_result)  
+
+    @parameterized.expand([
+        ('DOGO', (0,1,2), ['first', 'second', 'third']),
+        ('DOGO', (0,1,3), ['first', 'second', 'last']),
+        ('DOGO', (0,2,3), ['first', 'third', 'last']),
+        ('HELLO#WORLD', (0,4,6), ['first', 'last', 'first']),
+        ('HELLO#WORLD', (0,7,10), ['first', 'second', 'last']),
+        ('HELLO#WORLD#GOODBYE', (0,3,17), ['first', 'middle', 'middle'])
+    ])      
+    def test_determine_position_type(self, word, pos, expected_result):
         
-        
+        actual_result = word_abbreviator.determine_position_type(pos, word)
+        self.assertEqual(actual_result, expected_result)     
+    
          
 
 if __name__ == '__main__':
