@@ -217,10 +217,10 @@ def remove_duplicate_abbreviations(scored_abbr_lists):
     """Remove duplicate abbreviations when present in other lists.
 
     Args:
-        scored_abbr_lists (List[List[str]]): A list of abbreviations.
+        scored_abbr_lists (List[List[(str, int)]]): A list of scored abbreviations.
 
     Returns:
-        List[List[(abbr, score)]]: A list of unique abbreviations.
+        List[List[(str, int)]]: A list of unique scored abbreviations.
     """
     
     duplicates = set()
@@ -238,13 +238,14 @@ def remove_duplicate_abbreviations(scored_abbr_lists):
             # Add duplicates
             duplicates |= set(x) & set(y)
             
+            
     # Remove duplicate abbreviations from abbr list and their related pos types.
     for i, abbr_list in enumerate(scored_abbr_lists):
         
         # Find indexes of duplicates present in the list
         duplicate_indexes = [i for i,v in enumerate(abbr_list) if v[0] in duplicates]
         
-        # Remove duplicates form both lists based on the index
+        # Remove duplicates from list based on the index
         unique_abbr_list = [v for i,v in enumerate(abbr_list) if i not in duplicate_indexes]
 
         new_abbr_lists.append(unique_abbr_list)
