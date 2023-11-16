@@ -270,32 +270,45 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists, char_values):
     # For each list
     for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
         
-        # Ignore empty abbr list
-        if len(abbr_list) == 0:
-            min_score_abbr_lists.append([])
-            continue
-        
-        # Store abbreviation and its score
-        abbr_scores = []
-        
-        # Find score for each abbreviation in the list
-        for abbr, pos_types in zip(abbr_list, pos_type_list):
-
-            # Score abbreviation
-            abbr_score = score_abbreviation(abbr, pos_types, char_values)  
-                    
-            # Add abbreviation and score to list
-            abbr_scores.append((abbr, abbr_score))
-            
-        # Find lowest score
-        min_score = min(abbr_scores, key = lambda x: x[1])
-
-        # Find all abbreviations containing min score
-        min_scores = [abbr_score[0] for abbr_score in abbr_scores if abbr_score[1] == min_score[1]]
-        
+        min_scores = find_min_scoring_abbreviations(abbr_list, pos_type_list, char_values)
         min_score_abbr_lists.append(min_scores)
 
     return min_score_abbr_lists
+
+def find_min_scoring_abbreviations(abbr_list, pos_type_list, char_values):
+    """Finds all abbreviations which have the same min score.
+
+    Args:
+        abbr_list ([List[str]): A list of abbreviation lists.
+        pos_type_list (List[(str,str, str)]): A list of position type corresponding to each abbreviation.
+
+    Returns:
+        List[(str, score)]]: A list of min scoring abbreviation tuples containing abbr and its score.
+    """
+    
+     # Ignore empty abbr list
+    if len(abbr_list) == 0:
+        return []
+        
+    # Store abbreviation and its score
+    abbr_scores = []
+    
+    # Find score for each abbreviation in the list
+    for abbr, pos_types in zip(abbr_list, pos_type_list):
+
+        # Score abbreviation
+        abbr_score = score_abbreviation(abbr, pos_types, char_values)  
+                
+        # Add abbreviation and score to list
+        abbr_scores.append((abbr, abbr_score))
+        
+    # Find lowest score
+    min_score = min(abbr_scores, key = lambda x: x[1])
+
+    # Find all abbreviations containing min score
+    min_scores = [abbr_score[0] for abbr_score in abbr_scores if abbr_score[1] == min_score[1]]
+    
+    return min_scores
                     
 def score_abbreviation(abbr, pos_types, char_values):
     """Score the abbreviation.
