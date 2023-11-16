@@ -50,6 +50,15 @@ class TestWordSplit(unittest.TestCase):
         actual_result = word_abbreviator.determine_position_type(pos, word)
         self.assertEqual(actual_result, expected_result)     
     
+    @parameterized.expand([
+        ([['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']], [['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']]),
+        ([['ABC', 'ZAB', 'GHI'], ['GHI', 'JKL'], ['ABC']], [['ZAB'], ['JKL'], []]),
+        ([['ABC', 'GHI', 'ABC'], ['GHI', 'AND'], ['FDG', 'AND']], [['ABC', 'ABC'], [], ['FDG']])
+    ])      
+    def test_remove_duplicate_abbreviations(self, input_string, expected_result):
+        
+        actual_result = word_abbreviator.remove_duplicate_abbreviations(input_string, input_string)
+        self.assertEqual(actual_result[0], expected_result)     
          
 
 if __name__ == '__main__':
