@@ -59,7 +59,22 @@ class TestWordSplit(unittest.TestCase):
         
         actual_result = word_abbreviator.remove_duplicate_abbreviations(input_string, input_string)
         self.assertEqual(actual_result[0], expected_result)     
-         
+        
+        
+    @parameterized.expand([
+        ('DAG', ['first', 'second', 'third'], 37),
+        ('POP', ['first', 'first', 'middle'], 11),
+        ('MUE', ['first', 'middle', 'last'], 43),
+        ('CLD', ['first', 'third', 'last'], 22),
+        ('COO', ['first', 'second', 'third'], 43),
+        ('CCO', ['first', 'first', 'second'], 21)
+    ])      
+    def test_score_abbreviation(self, abbr, pos_types, expected_result):
+        
+        char_values = word_abbreviator.load_char_values()
+        
+        actual_result = word_abbreviator.score_abbreviation(abbr, pos_types, char_values)
+        self.assertEqual(actual_result, expected_result)        
 
 if __name__ == '__main__':
     unittest.main()
