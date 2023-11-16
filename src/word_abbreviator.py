@@ -260,6 +260,7 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists, char_values):
     Args:
         abbr_lists (List[List[str]]): A list of abbreviation lists.
         pos_type_lists (List[List[(str, str)]): A list of lists of position type corresponding to each abbreviation.
+        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
 
     Returns:
         List[List[str]]: A list containing abbreviations with lowest score for each abbreviation list.
@@ -281,6 +282,7 @@ def find_min_scoring_abbreviations(abbr_list, pos_type_list, char_values):
     Args:
         abbr_list ([List[str]): A list of abbreviation lists.
         pos_type_list (List[(str,str, str)]): A list of position type corresponding to each abbreviation.
+        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
 
     Returns:
         List[(str, score)]]: A list of min scoring abbreviation tuples containing abbr and its score.
@@ -315,7 +317,8 @@ def score_abbreviation(abbr, pos_types, char_values):
 
     Args:
         abbr (str): Abbreviation to score.
-        pos_types ((str,str)): Position type for each relevant abbreviation char
+        pos_types ((str,str)): Position type for each relevant abbreviation char.
+        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
 
     Returns:
         int: Score of the abbreviation.
