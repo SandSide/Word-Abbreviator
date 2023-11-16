@@ -213,22 +213,21 @@ def determine_position_type(positions, chars):
 
     return pos_types
         
-def remove_duplicate_abbreviations(abbr_lists, pos_lists):
+def remove_duplicate_abbreviations(scored_abbr_lists):
     """Remove duplicate abbreviations when present in other lists.
 
     Args:
-        abbr_lists (List[List[str]]): A list of abbreviations.
-        pos_lists (List[List[(str,str)]]: A list of pos types.
+        scored_abbr_lists (List[List[str]]): A list of abbreviations.
 
     Returns:
-        List[List[abbr]]: A list of unique abbreviations.
-        List[List[()]]: A list of types for each unique abbreviation.
+        List[List[(abbr, score)]]: A list of unique abbreviations.
     """
     
     duplicates = set()
     new_abbr_lists = []
-    new_pos_type_lists = []
-
+    
+    abbr_lists = [[y[0] for y in x] for x in scored_abbr_lists]
+    
     # Find all duplicate abbreviations
     for i,x in enumerate(abbr_lists):
         for j,y in enumerate(abbr_lists):
@@ -240,27 +239,23 @@ def remove_duplicate_abbreviations(abbr_lists, pos_lists):
             duplicates |= set(x) & set(y)
             
     # Remove duplicate abbreviations from abbr list and their related pos types.
-    for i, (abbr_list, pos_list) in enumerate(zip(abbr_lists, pos_lists)):
+    for i, abbr_list in enumerate(scored_abbr_lists):
         
         # Find indexes of duplicates present in the list
-        duplicate_indexes = [i for i,v in enumerate(abbr_list) if v in duplicates]
+        duplicate_indexes = [i for i,v in enumerate(abbr_list) if v[0] in duplicates]
         
         # Remove duplicates form both lists based on the index
         unique_abbr_list = [v for i,v in enumerate(abbr_list) if i not in duplicate_indexes]
-        unique_pos_list = [v for i,v in enumerate(pos_list) if i not in duplicate_indexes]
-        
-        new_abbr_lists.append(unique_abbr_list)
-        new_pos_type_lists.append(unique_pos_list)
-        
-    return new_abbr_lists, new_pos_type_lists
 
-def find_all_min_score_abbreviations(abbr_lists, pos_type_lists, char_values):
+        new_abbr_lists.append(unique_abbr_list)
+        
+    return new_abbr_lists
+
+def find_all_min_score_abbreviations(scored_abbr_lists):
     """Finds all abbreviations which have min score for each abbreviations list.
 
     Args:
-        abbr_lists (List[List[str]]): A list of abbreviation lists.
-        pos_type_lists (List[List[(str, str)]): A list of lists of position type corresponding to each abbreviation.
-        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
+        scored_abbr_lists (List[List[(str, score]]): A list of abbreviation and their score lists.
 
     Returns:
         List[List[str]]: A list containing abbreviations with lowest score for each abbreviation list.
@@ -269,49 +264,67 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists, char_values):
     min_score_abbr_lists = []
     
     # For each list
-    for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):
+    for abbr_list in scored_abbr_lists:
         
-        min_scores = find_min_scoring_abbreviations(abbr_list, pos_type_list, char_values)
+        min_scores = find_min_scoring_abbreviations(abbr_list)
         min_score_abbr_lists.append(min_scores)
 
     return min_score_abbr_lists
 
-def find_min_scoring_abbreviations(abbr_list, pos_type_list, char_values):
+def find_min_scoring_abbreviations(scored_abbr_lists):
     """Finds all abbreviations which have the same min score.
 
     Args:
-        abbr_list ([List[str]): A list of abbreviation lists.
-        pos_type_list (List[(str,str, str)]): A list of position type corresponding to each abbreviation.
-        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
+        scored_abbr_lists ([List[(str, score)]): A list of abbreviation lists.
 
     Returns:
         List[(str, score)]]: A list of min scoring abbreviation tuples containing abbr and its score.
     """
     
      # Ignore empty abbr list
-    if len(abbr_list) == 0:
+    if len(scored_abbr_lists) == 0:
         return []
         
-    # Store abbreviation and its score
-    abbr_scores = []
-    
-    # Find score for each abbreviation in the list
-    for abbr, pos_types in zip(abbr_list, pos_type_list):
 
-        # Score abbreviation
-        abbr_score = score_abbreviation(abbr, pos_types, char_values)  
-                
-        # Add abbreviation and score to list
-        abbr_scores.append((abbr, abbr_score))
-        
     # Find lowest score
-    min_score = min(abbr_scores, key = lambda x: x[1])
+    min_score = min(scored_abbr_lists, key = lambda x: x[1])
 
     # Find all abbreviations containing min score
-    min_scores = [abbr_score[0] for abbr_score in abbr_scores if abbr_score[1] == min_score[1]]
+    min_scores = [abbr_score[0] for abbr_score in scored_abbr_lists if abbr_score[1] == min_score[1]]
     
     return min_scores
+   
+def score_all_abbreviations(abbr_lists, pos_type_lists, char_values):
+    """Score all abbreviations in a list of abbreviations.
+
+    Args:
+        abbr_lists (List[List[str]]): A list of abbreviation lists.
+        pos_type_lists ((str, str, str)): A list of position type lists.
+        char_values (dict): Dictionary mapping to char value.
+
+    Returns:
+        List[List(abbr, score)]: A list of lists containing abbreviation and their scores.
+    """
+     
+    scored_abbr_lists = []
+     
+    for abbr_list, pos_type_list in zip(abbr_lists, pos_type_lists):  
+
+        scored_abbr_list = []
+        
+        # Find score for each abbreviation in the list
+        for abbr, pos_types in zip(abbr_list, pos_type_list):
+
+            # Score abbreviation
+            abbr_score = score_abbreviation(abbr, pos_types, char_values)  
                     
+            # Add abbreviation and score to list
+            scored_abbr_list.append((abbr, abbr_score))
+            
+        scored_abbr_lists.append(scored_abbr_list)
+        
+    return scored_abbr_lists
+                          
 def score_abbreviation(abbr, pos_types, char_values):
     """Score the abbreviation.
 
@@ -364,7 +377,7 @@ def score_position(pos_type):
     
     return 0
 
-def save_abbr(filename, abbr_lists, words):
+def save_abbreviation(filename, abbr_lists, words):
     """Save words and their abbreviations to a file.
 
     Args:
@@ -403,14 +416,17 @@ def main():
     # Find abbreviations
     abbr_lists, pos_type_lists = find_all_abbreviations(split_words_lists)
     
+    # Score all abbreviations
+    scored_abbr_lists = score_all_abbreviations(abbr_lists, pos_type_lists, char_values)
+    
     # Remove duplicates
-    unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos_type_lists)
-
+    unique_abbr_lists = remove_duplicate_abbreviations(scored_abbr_lists)
+    
     # Find all min scoring abbreviations
-    min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists, unique_pos_lists, char_values)
+    min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists)
 
     # Save abbreviations
-    save_abbr(filename, min_score_abbr_lists, words)
+    save_abbreviation(filename, min_score_abbr_lists, words)
     
 
 if __name__ == "__main__":
