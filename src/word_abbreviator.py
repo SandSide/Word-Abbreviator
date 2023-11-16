@@ -3,12 +3,14 @@ import os
 
 script_directory = os.path.dirname(os.path.abspath(__file__))
 
-char_value = {}
+
 
 def load_char_values():
     """Load char value dictionary from a file."""
 
     path = os.path.join(script_directory, 'values')
+    
+    char_value = {}
     
     with open(path + '.txt', 'r') as in_file:
         for line in in_file:
@@ -17,6 +19,8 @@ def load_char_values():
             char, value = line.split()
             
             char_value[char] = int(value)
+
+    return char_value
 
 def handle_user_input():
     """Prompt user for a filename and checks if it exists.
@@ -250,7 +254,7 @@ def remove_duplicate_abbreviations(abbr_lists, pos_lists):
         
     return new_abbr_lists, new_pos_type_lists
 
-def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
+def find_all_min_score_abbreviations(abbr_lists, pos_type_lists, char_values):
     """Finds all abbreviations which have min score for each abbreviations list.
 
     Args:
@@ -278,7 +282,7 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
         for abbr, pos_types in zip(abbr_list, pos_type_list):
 
             # Score abbreviation
-            abbr_score = score_abbreviation(abbr, pos_types)  
+            abbr_score = score_abbreviation(abbr, pos_types, char_values)  
                     
             # Add abbreviation and score to list
             abbr_scores.append((abbr, abbr_score))
@@ -293,7 +297,7 @@ def find_all_min_score_abbreviations(abbr_lists, pos_type_lists):
 
     return min_score_abbr_lists
                     
-def score_abbreviation(abbr, pos_types):
+def score_abbreviation(abbr, pos_types, char_values):
     """Score the abbreviation.
 
     Args:
@@ -318,7 +322,7 @@ def score_abbreviation(abbr, pos_types):
             char_score += 20 if char == 'E' else 5
         else:
             char_score += score_position(pos_type)
-            char_score += char_value[char]
+            char_score += char_values[char]
     
         # Add char score to overall score
         score += char_score   
@@ -369,7 +373,7 @@ def main():
     """Find unique and lowest scoring abbreviations to a list of word. """
     
     # Init char values
-    load_char_values()
+    char_values = load_char_values()
     
     # Get filename
     filename = handle_user_input()
@@ -381,13 +385,13 @@ def main():
     split_words_lists = split_words(words)
 
     # Find abbreviations
-    abbr_lists, pos__type_lists = find_all_abbreviations(split_words_lists)
+    abbr_lists, pos_type_lists = find_all_abbreviations(split_words_lists)
     
     # Remove duplicates
-    unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos__type_lists)
+    unique_abbr_lists, unique_pos_lists = remove_duplicate_abbreviations(abbr_lists, pos_type_lists)
 
     # Find all min scoring abbreviations
-    min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists, unique_pos_lists)
+    min_score_abbr_lists = find_all_min_score_abbreviations(unique_abbr_lists, unique_pos_lists, char_values)
 
     # Save abbreviations
     save_abbr(filename, min_score_abbr_lists, words)
