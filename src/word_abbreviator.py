@@ -284,7 +284,6 @@ def find_min_scoring_abbreviations(scored_abbr_lists):
      # Ignore empty abbr list
     if len(scored_abbr_lists) == 0:
         return []
-        
 
     # Find lowest score
     min_score = min(scored_abbr_lists, key = lambda x: x[1])

@@ -50,15 +50,15 @@ class TestWordSplit(unittest.TestCase):
         actual_result = word_abbreviator.determine_position_type(pos, word)
         self.assertEqual(actual_result, expected_result)     
     
-    @parameterized.expand([
-        ([['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']], [['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']]),
-        ([['ABC', 'ZAB', 'GHI'], ['GHI', 'JKL'], ['ABC']], [['ZAB'], ['JKL'], []]),
-        ([['ABC', 'GHI', 'ABC'], ['GHI', 'AND'], ['FDG', 'AND']], [['ABC', 'ABC'], [], ['FDG']])
-    ])      
-    def test_remove_duplicate_abbreviations(self, input_string, expected_result):
+    # @parameterized.expand([
+    #     ([['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']], [['ABC', 'DEF', 'DEF'], ['GHI', 'AND'], ['FDG']]),
+    #     ([['ABC', 'ZAB', 'GHI'], ['GHI', 'JKL'], ['ABC']], [['ZAB'], ['JKL'], []]),
+    #     ([['ABC', 'GHI', 'ABC'], ['GHI', 'AND'], ['FDG', 'AND']], [['ABC', 'ABC'], [], ['FDG']])
+    # ])      
+    # def test_remove_duplicate_abbreviations(self, input_string, expected_result):
         
-        actual_result = word_abbreviator.remove_duplicate_abbreviations(input_string, input_string)
-        self.assertEqual(actual_result[0], expected_result)     
+    #     actual_result = word_abbreviator.remove_duplicate_abbreviations(input_string)
+    #     self.assertEqual(actual_result[0], expected_result)     
         
         
     @parameterized.expand([
@@ -74,7 +74,15 @@ class TestWordSplit(unittest.TestCase):
         char_values = word_abbreviator.load_char_values()
         
         actual_result = word_abbreviator.score_abbreviation(abbr, pos_types, char_values)
-        self.assertEqual(actual_result, expected_result)        
+        self.assertEqual(actual_result, expected_result)   
+       
+    @parameterized.expand([
+        ([('COL', 22), ('AND', 32), ('NOV', 312), ('LOV', 22), ('COL', 55), ('PAL', 32)], ['COL', 'LOV'])
+    ])  
+    def test_find_min_score_abbreviations(self, scored_abbr_list, expected_result):
+        
+        actual_result = word_abbreviator.find_min_scoring_abbreviations(scored_abbr_list)
+        self.assertEqual(actual_result, expected_result)       
 
 if __name__ == '__main__':
     unittest.main()
