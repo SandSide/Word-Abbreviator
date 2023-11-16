@@ -22,6 +22,7 @@ def load_char_values():
 
     return char_value
 
+
 def handle_user_input():
     """Prompt user for a filename and checks if it exists.
     
@@ -39,6 +40,7 @@ def handle_user_input():
     
     return user_input
 
+
 def check_if_file_exists(filename):
     """Check if file exists in script directory.
 
@@ -52,6 +54,7 @@ def check_if_file_exists(filename):
     path = os.path.join(script_directory, filename) + ".txt"
     
     return os.path.exists(path)
+  
     
 def load_file(filename):
     """Load a file of strings.
@@ -71,6 +74,7 @@ def load_file(filename):
         word_list = [line.strip() for line in in_file if line.strip()]
 
     return word_list
+
 
 def split_string(word):
     """Split word to make it suitable for abbreviation.
@@ -95,6 +99,7 @@ def split_string(word):
     
     return split_word
 
+
 def split_words(word_list):
     """Split a list of words.
 
@@ -113,6 +118,7 @@ def split_words(word_list):
         split_words.append(split_word)
         
     return split_words
+
 
 def find_all_abbreviations(split_words):
     """Find all 3 letter abbreviations for each word.
@@ -139,6 +145,7 @@ def find_all_abbreviations(split_words):
         
     return abbr_lists, pos_type_lists
     
+    
 def find_abbreviations(words):
     """Find all 3 letter abbreviations for a list of word.
 
@@ -147,7 +154,7 @@ def find_abbreviations(words):
 
     Returns:
         List[str]: A list of abbreviations.
-        List(()): A list of pos type tuples for each char in abbr.
+        List((str,str,str)): A list of pos type tuples for each char in abbr.
     """
     
     # Convert words into a single word for easier manipulation
@@ -178,6 +185,7 @@ def find_abbreviations(words):
     
     return abbr_list, pos_type_list
     
+    
 def determine_position_type(positions, chars):
     """Determine position types for characters in an abbreviation.
 
@@ -186,7 +194,7 @@ def determine_position_type(positions, chars):
         chars (str): A str abbreviation was made from.
 
     Returns:
-        (str,str): Tuple of position types.
+        (str,str,str): Tuple of position types.
     """
      
     pos_types = []
@@ -212,6 +220,7 @@ def determine_position_type(positions, chars):
             pos_types.append('middle')
 
     return pos_types
+      
         
 def remove_duplicate_abbreviations(scored_abbr_lists):
     """Remove duplicate abbreviations when present in other lists.
@@ -272,6 +281,7 @@ def find_all_min_score_abbreviations(scored_abbr_lists):
 
     return min_score_abbr_lists
 
+
 def find_min_scoring_abbreviations(scored_abbr_lists):
     """Finds all abbreviations which have the same min score.
 
@@ -293,6 +303,7 @@ def find_min_scoring_abbreviations(scored_abbr_lists):
     min_scores = [abbr_score[0] for abbr_score in scored_abbr_lists if abbr_score[1] == min_score[1]]
     
     return min_scores
+   
    
 def score_all_abbreviations(abbr_lists, pos_type_lists, char_values):
     """Score all abbreviations in a list of abbreviations.
@@ -324,13 +335,14 @@ def score_all_abbreviations(abbr_lists, pos_type_lists, char_values):
         scored_abbr_lists.append(scored_abbr_list)
         
     return scored_abbr_lists
+              
                           
 def score_abbreviation(abbr, pos_types, char_values):
     """Score the abbreviation.
 
     Args:
         abbr (str): Abbreviation to score.
-        pos_types ((str,str)): Position type for each relevant abbreviation char.
+        pos_types ((str,str,str)): Position type for each relevant abbreviation char.
         char_values (Dict[char]: value): Dictionary with char as key and char value as value.
 
     Returns:
@@ -358,6 +370,7 @@ def score_abbreviation(abbr, pos_types, char_values):
         
     return score  
  
+ 
 def score_position(pos_type):
     """Score position type
 
@@ -376,6 +389,7 @@ def score_position(pos_type):
         return 3
     
     return 0
+
 
 def save_abbreviation(filename, abbr_lists, words):
     """Save words and their abbreviations to a file.
@@ -397,6 +411,7 @@ def save_abbreviation(filename, abbr_lists, words):
             
             all_abbr = " ".join(abbr_list)
             out_file.write('{}\n{}\n'.format(word, all_abbr))
+    
     
 def main():
     """Find unique and lowest scoring abbreviations to a list of word. """
