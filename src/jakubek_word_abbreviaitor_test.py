@@ -1,5 +1,6 @@
 import unittest
-import word_abbreviator
+import jakubek_word_abbreviator as word_abbreviator
+import jakubek_utility as utility
 from parameterized import parameterized
 
 class TestWordSplit(unittest.TestCase):
@@ -75,7 +76,7 @@ class TestWordSplit(unittest.TestCase):
     ])      
     def test_score_abbreviation(self, abbr, pos_types, expected_result):
         
-        char_values = word_abbreviator.load_char_values()
+        char_values = utility.load_char_values()
         
         actual_result = word_abbreviator.score_abbreviation(abbr, pos_types, char_values)
         self.assertEqual(actual_result, expected_result)   
