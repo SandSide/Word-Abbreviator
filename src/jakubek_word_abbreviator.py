@@ -347,6 +347,8 @@ def main():
     # Save abbreviations
     utility.save_abbreviation(filename, min_score_abbr_lists, words)
     
+    print('Script Finished')
+    
 
 if __name__ == "__main__":
     main()
