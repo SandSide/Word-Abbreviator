@@ -83,7 +83,7 @@ def save_abbreviation(filename, abbr_lists, words):
     """
     
     # Determine outfile name 
-    filename = filename + '_abbrevs.txt'
+    filename = 'jakubek_' + filename + '_abbrevs.txt'
     path = os.path.join(script_directory, filename)
     
     with open(path + '.txt', 'w') as out_file:

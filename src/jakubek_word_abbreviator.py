@@ -4,10 +4,10 @@ import jakubek_utility as utility
 
 
 def split_string(word):
-    """Split word to make it suitable for abbreviation.
+    """Split word into a suitable format for abbreviation.
 
     Args:
-        word (str_type_): String to split.
+        word (str): String to split.
 
     Returns:
         List[str]: A split string.
@@ -48,14 +48,14 @@ def split_words(word_list):
 
 
 def find_all_abbreviations(split_words):
-    """Find all 3 letter abbreviations for each word.
+    """Find all 3 letter abbreviations for each word in the list.
 
     Args:
         split_words (List[List[str]]): A list of split words.
 
     Returns:
-        List[List[abbr]]: A list of abbr for each split word.
-        List[List[()]]: A tuple of pos types of each abbr char for each split word.
+        List[List[abbr]]: A list of abbreviations for each split word.
+        List[List[Tuple(str,str,str)]]: A tuple of position types for each abbreviations character for each split word.
     """
     
     abbr_lists = []
@@ -74,14 +74,14 @@ def find_all_abbreviations(split_words):
     
     
 def find_abbreviations(words):
-    """Find all 3 letter abbreviations for a list of word.
+    """Find all 3 letter abbreviations for a string made out of a list of words.
 
     Args:
-        words (List[str]): Words to find abbreviations for.
+        words (List[str]): String of words to find an abbreviations for.
 
     Returns:
         List[str]: A list of abbreviations.
-        List((str,str,str)): A list of pos type tuples for each char in abbr.
+        List(Tuple(str,str,str)): A list of position type tuples for each character in abbreviation.
     """
     
     # Convert words into a single word for easier manipulation
@@ -117,11 +117,11 @@ def determine_position_type(positions, chars):
     """Determine position types for characters in an abbreviation.
 
     Args:
-        positions ((int,int,int)): Positions of abbreviation characters.
-        chars (str): A str abbreviation was made from.
+        positions (Tuple(int,int,int)): Positions of abbreviation characters.
+        chars (str): A string the abbreviation was made from.
 
     Returns:
-        (str,str,str): Tuple of position types.
+        Tuple(str,str,str): Tuple of position types.
     """
      
     pos_types = []
@@ -153,10 +153,10 @@ def remove_duplicate_abbreviations(scored_abbr_lists):
     """Remove duplicate abbreviations when present in other lists.
 
     Args:
-        scored_abbr_lists (List[List[(str, int)]]): A list of scored abbreviations.
+        scored_abbr_lists (List[List[Tuple(str, int)]]): A list of scored abbreviations.
 
     Returns:
-        List[List[(str, int)]]: A list of unique scored abbreviations.
+        List[List[Tuple(str, int)]]: A list of unique scored abbreviations.
     """
     
     duplicates = set()
@@ -192,7 +192,7 @@ def find_all_min_score_abbreviations(scored_abbr_lists):
     """Finds all abbreviations which have min score for each abbreviations list.
 
     Args:
-        scored_abbr_lists (List[List[(str, score]]): A list of abbreviation and their score lists.
+        scored_abbr_lists (List[List[Tuple(str, score]]): A list of abbreviation and their score lists.
 
     Returns:
         List[List[str]]: A list containing abbreviations with lowest score for each abbreviation list.
@@ -213,10 +213,10 @@ def find_min_scoring_abbreviations(scored_abbr_lists):
     """Finds all abbreviations which have the same min score.
 
     Args:
-        scored_abbr_lists ([List[(str, score)]): A list of abbreviation lists.
+        scored_abbr_lists ([List[Tuple(str, score)]): A list of abbreviation lists.
 
     Returns:
-        List[(str, score)]]: A list of min scoring abbreviation tuples containing abbr and its score.
+        List[Tuple(str, score)]]: A list of min scoring abbreviation tuples containing abbr and its score.
     """
     
      # Ignore empty abbr list
@@ -237,11 +237,11 @@ def score_all_abbreviations(abbr_lists, pos_type_lists, char_values):
 
     Args:
         abbr_lists (List[List[str]]): A list of abbreviation lists.
-        pos_type_lists ((str, str, str)): A list of position type lists.
-        char_values (dict): Dictionary mapping to char value.
+        pos_type_lists (Tuple(str, str, str)): A list of position type lists.
+        char_values (Dict[char,int]): Dictionary mapping to char value.
 
     Returns:
-        List[List(abbr, score)]: A list of lists containing abbreviation and their scores.
+        List[List[Tuple(abbr, score)]]: A list of lists containing abbreviation and their scores.
     """
      
     scored_abbr_lists = []
@@ -269,8 +269,8 @@ def score_abbreviation(abbr, pos_types, char_values):
 
     Args:
         abbr (str): Abbreviation to score.
-        pos_types ((str,str,str)): Position type for each relevant abbreviation char.
-        char_values (Dict[char]: value): Dictionary with char as key and char value as value.
+        pos_types (Tuple(str,str,str)): Position type for each relevant abbreviation char.
+        char_values (Dict[char,int]): Dictionary with char as key and char value as value.
 
     Returns:
         int: Score of the abbreviation.
